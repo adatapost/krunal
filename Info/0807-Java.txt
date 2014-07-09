@@ -1,0 +1,129 @@
+Java Platforms
+====================================================================
+  
+  What is a "platform" or "framework"?
+
+     The "platform" is a programming environment through which we can
+     develop, deploy and execute applications (programs) in a highly
+     distributed environment of the Internet (network).
+
+     In other words, it is a software which handle number of tasks on 
+     behalf of the developers. A software which controlls or manages
+     every things by its own ability.
+
+     The platform/framework software are developed/formed using      "Inversion of Control - IoC" theory. This theory uses holiwood       principle  - "Don't call us, we will call you".
+
+  Java SE, EE and ME - Java Platforms
+
+      SE - Standard Edition contains Java Language, Java Core API and
+           JRE.
+
+      EE - Enterprize Edition includes Java EE Apis, EE Runtime along 
+           with Java SE.
+
+      ME - Micro Edition includes ME APIs, ME Runtime along with
+           Java SE.
+
+
+  Best practices and naming conventions
+
+      1. Never ever create a class in default package. Always use 
+         named package.
+
+
+         package in.abc;
+
+         public class HelloApplication {}
+
+      2. Name of package must uses lower-case letters
+
+      3. Name of classes/interfaces/enums/annotation must uses          "PascalCase"  name pattern -- Capitalize the first letter of
+          each word.
+
+      4. Use "camelCasePattern" to name localVariable, fields,          and methods.
+
+      5. Use "CAPS" to name the constants.
+
+      6. Add one or more constructors and make sure they are public.
+
+      7. Instance or static Fields must be private.
+
+      8. Create getters/setters to encapsulate private fields.
+
+      9. Always use @Override annotation while overriding or          implementing a method.
+
+     10. Always create "public" classes/interface/enums.
+
+     11. Always use "Wrapper" classes instead of "primitive" types.
+
+
+
+  Primitive Vs Wrapper Types
+  ============================
+
+   Primitive types (byte, boolean, int, char, float, double, short,     long) are compiler defined classes / types and they don't have
+    additional methods. In other words, primitive types are classes
+    but they are not designed as per standard naming conventions & OOP
+    pattern of Java platform.
+
+   
+   Wrapper Types are Java classes (ie. They are sub-class of    java.lang.Object) and represent the behaviour and data of primitive
+   types.
+
+
+   Is java.lang.Object a super class for all classes?
+
+      No. It is the super class of all Java classes except the       primitives.
+
+   
+   How primitives and their equivalent wrapper classes works?
+
+       Java allow conversion (casting) of primitives to wrappers and
+       vice-versa automatically. This implicit casting is also known
+       as autoboxing and autounboxing.
+
+      For instance,
+
+           Integer no = 10;          <------- auto-boxing
+                        ^
+                        |--- primitive
+
+         is equivalent to,
+
+           Integer no = new Integer(10);
+
+
+          int k = no;                <---- auto-unboxing
+        
+          is eqauivalent to 
+
+           int k = no.intValue();   
+
+
+         
+Home Work:
+
+  
+ Design following classes:
+
+   public class Address 
+    {
+       private String city;
+       private Integer pin;
+       ......
+    }
+
+   public class Student
+   {
+       private String name;
+       private Integer roll;
+       private Address localAddress;
+       private Address postalAddress;
+       ....
+    }
+
+
+
+
+
+
