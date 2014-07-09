@@ -1,0 +1,42 @@
+public class Exam
+{
+   private String name;
+   private java.util.Date date
+}
+
+public class Subject
+{
+   private String name;
+}
+
+public class ExamSubject
+{
+    private Exam exam;
+    private Subject subject;
+    private Integer totalMarks;
+    private Integer obtainMarks;
+}
+
+Example:
+
+public abstract class Question
+{
+    private String question;
+    private String answer1,answer2,answer3;
+    
+    public abstract boolean isCorrect();
+    public abstract void display();
+}
+
+public class SingleChoice extends Question
+{
+    private int correctAnswer;
+    private int userAnswer;
+}
+
+public class MultiChoice extends Question
+{
+    private int []correctAnswer = new int[3]; //three answers
+    private int []userAnswer = new int[3]; // three answers
+}
+ 
