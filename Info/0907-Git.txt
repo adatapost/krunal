@@ -1,0 +1,15 @@
+https://github.com/adatapost/krunal
+
+
+The Github is (public/free) code repository. You can push (upload), pull (download), commit (confirm changes) your code among users/team members.
+
+ First of all you don't have account in order to read & download the
+ public repository.
+
+ If you register to github.com then you can copy existing public repository (called fork), make changes, commit, push or pull as per your will.
+
+ Your local work in your location can be sync with github.com's   repository but to do so you need to setup the local git repository.
+
+
+  
+
