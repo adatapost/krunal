@@ -1,0 +1,142 @@
+String to DateTime parse/conversion
+=====================================================
+
+  Use java.text.SimpleDateFormat class methods - format & parse
+
+  Example:
+
+      SimpleDateFormat sdf = new SimpleDateFormat("d-M-yyyy");
+      String strDate = "31-12-2001";
+
+      Date date = null;
+
+      try{
+         date = sdf.parse(strDate);
+         System.out.println(date);  //success
+      }catch(Exception ex){
+         System.out.println(ex);
+      }
+       
+
+Note: You can use following format:
+
+ d or dd	- day number
+ M or MM	- month number
+ E		- day name (abbr)
+ MMM		- month name (abbr)
+ y,yy,yyy	- year number
+ H		- 24 hour
+ h		- 12 hour
+ m		- minute
+ s		- second
+ a		- AM or PM
+
+
+
+ Example:
+
+ public class Test {
+   public static void main(String []args){
+       SimpleDateFormat sdf = new SimpleDateFormat("d-MMM-yyyy H:m:s");
+      String strDate = "31-Oct-2012 18:4:3";
+
+      Date date = null;
+
+      try{
+         date = sdf.parse(strDate);
+         System.out.println(date);  //success
+      }catch(Exception ex){
+         System.out.println(ex);
+      }
+       
+   }
+}
+
+
+Example: Date to String formating. You can use "SimpleDateFormat's format() method" to convert Date object to string.
+
+
+  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy h:m:s a");
+  Date dt = new Date();
+  System.out.println(sdf.format(dt));
+
+OR
+
+  String strDate = new SimpleDateFormat("dd-MM-yyyy h:m:s a")
+                                           .format(new Date());
+
+  System.out.println(strDate);
+
+
+
+Example: Date utility class to ease Date & time operations.
+
+[Homework: add more methods related to time, compare two date etc]
+
+public class D {
+
+    public static java.util.Date now() {
+        return new Date();
+    }
+
+    public static String toShort(Date dt) {
+        return new SimpleDateFormat("dd-MM-yyyy").format(dt);
+    }
+
+    public static String toLong(Date dt) {
+        return new SimpleDateFormat("dd-MM-yyyy h:m:s a").format(dt);
+    }
+
+    public static Date toDate(String pattern, String str) {
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        try {
+            return sdf.parse(str);
+
+        } catch (ParseException ex) {
+            System.out.println(ex);
+        }
+        return null;
+    }
+   public static java.util.Date now(int ms) {
+        return new Date(ms);
+    }
+
+}
+
+
+
+Homework:  
+
+Point{
+   private int x,y;
+}
+
+Rect{
+   private Point start,end;
+}
+
+Circle {
+   private Point point;
+   private int radius;
+}
+
+Poly{
+   private Point []points;
+}
+
+
+
+
+ Person a = new Person("A",80,null,null);
+ Person b = new Person("B",80,null,null);
+
+ Married m = new Married(a,b, D.toDate("10-10-1942"));
+
+ Person c = new Person("C",50,a,b);
+ Person d = new Person("D",55,null,null);
+
+ Person e = new Person("K",42,c,d);
+ Person e1 = new Person("K1",42,c,d);
+
+
+ 

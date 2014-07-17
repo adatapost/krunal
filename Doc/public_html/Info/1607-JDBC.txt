@@ -1,0 +1,182 @@
+The JDBC - java.sql package
+==================================================================
+ 
+ JDBC is a protocol through which Java developer connect to any  Database product. That's why JDBC is called database-integration API.
+
+ In order to use database product with Java code you must have JDBC implementation of concern database and this implementation is called "Driver" or "JDBC Driver".
+
+
+ There isn't any official full form of JDBC but people uses Java's  Database Connectivity. But it isn;t -- It is just a name of  "protocol".
+
+
+ JDBC is protocol published by JCP - Java Community Process (In fact all Java SE and Java EE, ME are specification based and their specifications are recommended by JCP.)
+
+
+ JDBC Implementations
+ ====================
+
+  Different database companies & software vendor develop JDBC products
+  by implementing interfaces of java.sql and javax.sql packages using   their own programming language (Java,Scala,C++/C) and platforms.
+
+  Based upon the different implementations we can have following   classification of JDBC Drivers.
+ 
+  1. JDBC-ODBC Bridge Type 1 Driver --- Microsoft OS has another      protocol called "ODBC" so JDBC's Microsoft implementation is
+     called "JDBC-ODBC Bridge". And because ODBC is very slow and
+     platform specific so it is not used commonly.
+  2. Type 2 Driver - Written in C/C++ using vendor specific protocol      and hence they are not popular.
+  3. Type 3 Driver - Written in C++ using Open Call Interface (OCI)
+      and partially Java language to enhance the performance.
+  4. Type 4 Driver - Written in Java code only and uses "standard"      TCP/IP protocol so TYPE 3 & 4 are most commonly used drivers.
+
+ We will use Type 3 & 4 drivers from oracle,mysql,mssql etc.
+
+
+
+Dept
+-----
+DeptNo   Number PK
+DeptName Varchar2(40)
+
+
+Emp
+----
+EmpNo   Number PK
+DeptNo  Number FK
+EmpName Varchar2 (50)
+
+Write down create table syntax.
+ 
+
+--------------------------------------------
+Always store your sql statements (DDL) into script (.sql) file.
+
+sql>connect username/password
+
+sql>edit c:\javaprg\89\emp.sql
+
+
+    Will open notepad editor and type following:
+
+
+DROP TABLE emp
+
+/
+
+DROP TABLE dept
+
+/
+
+CREATE TABLE  dept
+(
+   deptno  number(2)   primary key,
+   deptname varchar2(30),
+   deptlocation varchar2(30)
+)
+/
+
+CREATE TABLE emp
+(
+  eno number(5) primary key,
+  ename varchar2(40),
+  edate date,
+  deptno number(2), 
+  FOREIGN KEY (deptno) REFERENCES dept(deptno)
+)
+/
+
+
+  SAVE emp.sql + Close it and run/execute at sql prompt
+
+sql>@c:\javaprg\89\emp 
+
+Example: create emp-data.sql
+
+sql>edit c:\javaprg\89\emp-data.sql
+
+insert into dept values (1,'Accounting','Mehsana');
+insert into dept values (2,'HR','Mumbai');
+
+insert into emp values (10,'Rajesh','10-JAN-1992',1);
+insert into emp values (20,'Ramesh','10-JAN-1998',2);
+insert into emp values (30,'Majesh','31-DEC-2002',1);
+insert into emp values (40,'Suresh','2-JAN-2012',2);
+
+sql>@c:\javaprg\89\emp-data.sql
+
+FETCH ROWS FROM BOTH (TWO OR MORE) TABLES -- JOINS
+====================================================
+
+1. SELECT * 
+            FROM EMP
+                JOIN DEPT 
+                   ON EMP.DEPTNO = DEPT.DEPTNO;
+
+    Will fetch (because of *) all columns from both tables based upon     the value of DEPTNO in both column
+
+
+  OR
+
+     SELECT * 
+            FROM DEPT
+                JOIN EMP 
+                   ON EMP.DEPTNO = DEPT.DEPTNO;
+
+ 2. 
+    SELECT EMP.ENAME,DEPT.DEPTNAME 
+            FROM DEPT
+                JOIN EMP 
+                   ON EMP.DEPTNO = DEPT.DEPTNO;
+
+NESTED QUERY -- 
+===========================
+ SELECT ALL EMP LIVE IN 'Mehsana' city
+
+ SELECT * FROM EMP
+            WHERE 
+               DEPTNO IN (SELECT DEPTNO FROM DEPT
+                                 WHERE DEPTLOCATION = 'Mehsana');
+
+
+HOMEWORK
+========
+
+STUDENT
+-------------
+STUDENTID - PK
+NAME
+ADDRESS
+
+COURSE
+-------------------
+COURSEID - PK
+COURSENAME
+
+ADMISSION
+--------------
+ADMISSIONID - PK
+STUDENTID   - FK
+COURSEID    - FK
+ADMISSIONDATE - DATE
+FEES        
+
+BATCH
+-----------------
+BATCHID - PK
+STARTDATE 
+BATCHNAME
+
+
+STUDENTBATCH
+------------------------
+STUDENTBATCHID - PK
+ADMISSIONID - FK
+BATCHID     - FK
+
+
+
+
+
+
+
+
+

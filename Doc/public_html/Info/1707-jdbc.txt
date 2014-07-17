@@ -1,0 +1,71 @@
+How to use JDBC APIs?
+==================================================================
+In order to use database product using Java API, we must have to download or copy JDBC Driver (.jar) into our project or app folder.
+
+   For example,
+
+     Oracle 10g -- Driver file name is ojdbc14.jar (located at "jdbc"
+                   folder in oraclexe home.
+
+1. Open Netbeans (Create/open project)
+
+2. Expand "libraries" node + right mouse click + add Jar/folder + 
+   set location of "ojdbc14.jar" (or other ".jar" as per database    product).   
+
+   [Note: Mysql JDBC driver exists with Netbeans so you don't have
+          to download].
+
+3. Create a class with main method.
+
+
+4.  Very first step to use "JDBC Api" is to load "Driver" class.
+
+    You can load "Driver" class using following syntax:
+
+     try{
+         Class.forName("package.ClassNameDriver");
+     }catch(Exception ex) {
+         System.out.println("Unable to register/load driver : " + ex);
+     }
+
+     
+5.  To connect and execute queries, we will use interfaces and class     from java.sql package. 
+
+
+    //To connect
+
+    java.sql.Connection cn = java.sql.DriverManager
+                        .getConnection("protocol","username","pass");
+
+    protocol string is called connection string and it can be
+    change from one database product to another.
+
+    For oracle 10g:
+
+             jdbc:oracle:thin:@localhost  Or
+             jdbc:oracle:thin:@127.0.0.1 // (IP address)
+
+     Always wrap JDBC objects(resource) with try-with-resource block
+     to avoid memory-leak.
+
+Example: code in main method:
+
+public static void main(String []args){
+        //1. Load driver
+        try{
+            Class.forName("oracle.jdbc.OracleDriver");
+        }catch(Exception ex){
+            System.out.println("Unable to load driver :" + ex) ;
+            return;
+        }
+        
+        //2. Obtain connection
+        try(Connection cn = DriverManager.getConnection("jdbc:oracle:thin:@localhost", "dhavan", "dhavan")){
+            System.out.println("Connection OK!");
+            //3. Execute statements....s
+        }catch(Exception ex){
+            System.out.println("Connection error : " + ex);
+        }
+    }    
+
+  

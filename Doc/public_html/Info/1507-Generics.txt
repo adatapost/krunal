@@ -1,0 +1,372 @@
+Generics Or Parameterized Types
+=====================================================================
+
+Generic is Java compiler feature which passes sub-classes of java.lang.Object to another type using following syntax:
+
+class ClassName<T1,T2,....>
+{
+ .....
+ }
+interface InterfaceName<T1,T2,...>
+{
+}
+
+Generic or type parameter allow us to re-use the same source code for different type and hence it is mostly used with complex data-structure algorithms including stack, queue, linked list, tree, graph and so on.
+
+
+Example:
+
+public class Stack<T> {
+    private T []items;
+    private int top = -1;
+    
+    public Stack(T items[]){
+        this.items = items;
+    }
+    public void push(T item){
+        top++;
+        if(top>=items.length){
+            System.out.println("Stack overflow");
+            top--;
+            return;
+        }
+        items[top]=item;
+    }
+    public T pop(){
+        if(top<0){
+            System.out.println("Underflow");
+            return null;
+        }
+        return items[top--];
+    }
+}
+
+
+Code in main method : 
+
+        Stack<String> s = new Stack<>(new String[3]);
+        Stack<Double> t = new Stack<>(new Double[3]);
+        s.push("Abc");
+        t.push(10.10);
+        System.out.println(s.pop() + " " + t.pop());
+
+Example - 2 : Represent Key-Value pair of any datatype.
+
+public class Pair<K,V> {
+   private K key;
+   private V value;
+
+    public Pair() {
+    }
+
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public K getKey() {
+        return key;
+    }
+
+    public void setKey(K key) {
+        this.key = key;
+    }
+
+    public V getValue() {
+        return value;
+    }
+
+    public void setValue(V value) {
+        this.value = value;
+    }
+   
+}
+
+Code in main method : 
+         Pair<String,Double> item=new Pair<>("Pen", 10.10);
+         System.out.println(item.getKey() + " " + item.getValue());
+
+
+
+
+Where and when "Generics" is used?
+
+   In Java platforms (SE,EE and ME) (and also Android), generics is the    most commonly used technique to re-use the code by sending TYPES to
+   another TYPE.
+
+   The java.util package contains interfaces, abstract classes and 
+   concrete classes using "Generics" and later these classes are used
+   by Java EE - Servlet, WebServices, EJB, I/O, Java Mail and many    more.
+
+   There are three Types of collection framework classes: List, Set and    Map (these are three interfaces).
+
+   
+How can we design our own collection class in Java?
+
+  You can implement java.lang.Iterable interface and override its
+  
+       public java.util.Iterator<T> iterator() {} 
+
+   method.
+
+   All collection classes in java.util implemented the "Iterable"
+   interface.
+
+
+public class MyColletion  implements Iterable<Integer> {
+
+    private Integer []nos = {10,20,30,40};
+    private int index = 0;
+    
+    @Override
+    public Iterator<Integer> iterator() {
+        return new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+               if(index>=nos.length) return false;
+               return true;
+            }
+            @Override
+            public Integer next() {
+                return nos[index++];
+            }
+        };
+    }
+}
+
+public class Test {
+   public static void main(String []args){
+       MyColletion items = new MyColletion();
+       for(Integer no : items) {
+           System.out.println(no);
+       }
+   }
+}
+
+
+Example of List<T> -- Collection of ordered items
+
+   ArrayList<T> Example
+   =====================
+        ArrayList<String> cities = new ArrayList<>();
+        cities.add("Mehsana");
+        cities.add("Surat");
+        cities.add(1, "Jamnagar");
+        for(String s: cities){
+            System.out.println(s);
+        }
+        
+        cities.remove("Mehsana"); //Remove using equals & hashCode
+        cities.set(0, cities.get(0) + " West");
+        for(String s: cities){
+            System.out.println(s);
+        }
+
+
+    Shopping Cart Example - 1
+    ==========================
+
+public class Product {
+   private String name;
+   private Double rate;
+   private Double qty;
+
+    public Product() {
+    }
+
+    public Product(String name, Double rate, Double qty) {
+        this.name = name;
+        this.rate = rate;
+        this.qty = qty;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
+
+    public Double getQty() {
+        return qty;
+    }
+
+    public void setQty(Double qty) {
+        this.qty = qty;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + Objects.hashCode(this.name);
+        hash = 13 * hash + Objects.hashCode(this.rate);
+        hash = 13 * hash + Objects.hashCode(this.qty);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Product other = (Product) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.rate, other.rate)) {
+            return false;
+        }
+        if (!Objects.equals(this.qty, other.qty)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" + "name=" + name + ", rate=" + rate + ", qty=" + qty + '}';
+    }
+}
+
+ 
+public class Sample {
+    public static void main(String []args){
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product("Pen",10.00,10.00));
+        products.add(new Product("Pencil",4.00,10.00));
+        
+        for(Product p : products){
+            System.out.println(p);
+        }
+     }
+}
+
+ Shopping Cart Example - 2
+ ==========================
+
+ public class Product {
+   private String name;
+   private Double rate;
+   private Double qty;
+
+    public Product() {
+    }
+
+    public Product(String name, Double rate, Double qty) {
+        this.name = name;
+        this.rate = rate;
+        this.qty = qty;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
+
+    public Double getQty() {
+        return qty;
+    }
+
+    public void setQty(Double qty) {
+        this.qty = qty;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + Objects.hashCode(this.name);
+        hash = 13 * hash + Objects.hashCode(this.rate);
+        hash = 13 * hash + Objects.hashCode(this.qty);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Product other = (Product) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.rate, other.rate)) {
+            return false;
+        }
+        if (!Objects.equals(this.qty, other.qty)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" + "name=" + name + ", rate=" + rate + ", qty=" + qty + '}';
+    }
+}
+
+public class Cart extends ArrayList<Product> {
+   public void add(String name,Double rate, Double qty){
+       this.add(new Product(name, rate, qty));
+   }
+}
+
+public class Sample {
+     public static void main(String []args){
+        Cart products = new Cart();
+        products.add(new Product("Pen",10.00,10.00));
+        products.add(new Product("Pencil",4.00,10.00));
+        products.add("Book", 100.10, 2.4);
+        
+        for(Product p : products){
+            System.out.println(p);
+        }
+     }
+}
+
+Example : Unique item collection -- HashSet<T> class
+
+public class CartSet extends HashSet<Product> {
+  public void add(String name,Double rate, Double qty){
+       this.add(new Product(name, rate, qty));
+   }
+}
+public class Sample {
+    public static void main(String []args){
+        CartSet products = new CartSet();
+        products.add(new Product("Pen",10.00,10.00));
+        products.add(new Product("Pencil",4.00,10.00));
+         products.add(new Product("Pen",10.00,10.00));
+        products.add(new Product("Pen",10.00,10.00));
+        products.add("Book", 100.10, 2.4);
+        
+        for(Product p : products){
+            System.out.println(p);
+        }
+     }
+}
