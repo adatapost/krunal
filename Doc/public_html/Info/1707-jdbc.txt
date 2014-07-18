@@ -69,3 +69,8 @@ public static void main(String []args){
     }    
 
   
+Note: JDBC Version 4.0 drivers loaded automatically so no need to use       Class.forName("...").
+
+      Not all Databases have JDBC 4 implementations so we will use
+      Class.forName("...").
+

@@ -1,0 +1,206 @@
+java.sql package
+==============================================================
+
+1. DriverManager class -- It has a method called getConnection(), which
+   returns an instance of java.sql.Connection. If connection url,    username and password are proper then this method returns    "Connection" object, throws exception otherwise.
+
+2. Connection interface -- It is populated via 	DriverManager.getConnection() and after that you can use this
+        object to create "Statement" object.
+
+3. Statement, PreparedStatement and CallableStatement -- These statement types used to create "SQL statement", set "parameters" and
+execute them.
+  
+
+   Statement interface has two sub-interfaces namely    "PreparedStatement" and "CallableStatement".
+
+   PreparedStatement is used to create DML,DDL SQL statement and    execute them.
+
+   CallableStatement is used to execute "stored-procedure" and   "functions".
+
+
+4. ResultSet interface -- ResultSet interface holds database result    that is returned by database when we issue "SELECT" statement or
+   procedure/function returns result.
+
+
+
+Methods of Connection
+----------------------
+
+1. PreparedStatement prepareStatement(string_sql);
+
+   This method compiles "string_sql" and returns an instance of    "PreparedStatement".
+
+   You have to specify parameter symbol ? with query statement which
+   indicate values.
+
+   e.g
+
+    String sql = "insert into dept values (?,?,?)";
+ Or
+    String sql = "insert into dept(deptName,deptno,location) values                        (?,?,?)";
+
+2. close() -- To dispose the connection object. It is very important to
+   call close() when your database operation is done. The try-with-resource syntax gaurantee that this method will be called even an exception is thrown.
+
+
+PreparedStatement methods
+---------------------------
+1. setXXXXX(column_index, XXXXX value)
+   Where XXXXX is the name of datatype.
+
+   This method replace parameter using appropriate value.
+
+   e.g
+
+    setInteger(1,10);
+    setString(2,"Mr.A");
+2. int executeUpdate() -- This method execute SQL statement and returns
+   count of affected rows (of integer). Use this method to execute all
+   statement except "SELECT".
+
+3. ResultSet executeQuery() -- This method execute SQL statement and    returns a cursor (database result). Use this method when you're
+   interested to obtain database result especially when executing    "SELECT" statements.
+
+4. close() -- call close to dispose "PreparedStatement" object.
+
+
+ResultSet methods
+------------------
+
+1. boolean next() -- It reads a row from database. Returns true if row
+			has data, returns false otherwise.
+
+2. getXXXXX(Column_index or column_name) -- Returns value of given 	column name or number.
+
+3. close() -- call close() to dispose "ResultSet".
+
+
+Example: Insert a row into "dept" table.
+-----------------------------------------
+public class Sample {
+    public static void main(String []args){
+        //1. Load driver
+        try{
+            Class.forName("oracle.jdbc.OracleDriver");
+        }catch(Exception ex){
+            System.out.println("Unable to load driver :" + ex) ;
+            return;
+        }
+        
+        //2. Obtain connection
+        try(Connection cn = DriverManager.getConnection               ("jdbc:oracle:thin:@localhost", "dhavan", "dhavan")){
+            
+            //3. Execute statements
+            String sql  = "insert into dept values (?,?,?)";
+            try(PreparedStatement ps= cn.prepareStatement(sql) ){
+                ps.setInt(1, 3);
+                ps.setString(2, "Production");
+                ps.setString(3, "Ahmedabad");
+                int ret = ps.executeUpdate();
+                System.out.println(ret  + " row added");
+            }catch(Exception ex){
+                System.out.println("Error while executing statement " 
+                                    + ex);
+            }
+            
+            
+        }catch(Exception ex){
+            System.out.println("Connection error : " + ex);
+        }
+    }
+}
+
+
+Example - 2 Update a row
+
+public static void main(String[] args) {
+        //1. Load driver
+        try {
+            Class.forName("oracle.jdbc.OracleDriver");
+        } catch (Exception ex) {
+            System.out.println("Unable to load driver :" + ex);
+            return;
+        }
+
+        //2. Obtain connection
+        try (Connection cn = DriverManager.getConnection("jdbc:oracle:thin:@localhost", "dhavan", "dhavan")) {
+
+            //3. Execute statements
+            String sql = "update dept set deptname=?,deptlocation=? where deptno=?";
+            try (PreparedStatement ps = cn.prepareStatement(sql)) {
+               
+                ps.setString(1, "Abc");
+                ps.setString(2, "Pat");
+                ps.setInt(3,1);
+                int ret = ps.executeUpdate();
+                System.out.println(ret + " row updated");
+            } catch (Exception ex) {
+                System.out.println("Error while executing statement " + ex);
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Connection error : " + ex);
+        }
+    }
+
+
+Example-3 Delete a row
+
+public static void main(String[] args) {
+        //1. Load driver
+        try {
+            Class.forName("oracle.jdbc.OracleDriver");
+        } catch (Exception ex) {
+            System.out.println("Unable to load driver :" + ex);
+            return;
+        }
+
+        //2. Obtain connection
+        try (Connection cn = DriverManager.getConnection("jdbc:oracle:thin:@localhost", "dhavan", "dhavan")) {
+
+            //3. Execute statements
+            String sql = "delete from dept  where deptno=?";
+            try (PreparedStatement ps = cn.prepareStatement(sql)) {
+                ps.setInt(1,1);
+                int ret = ps.executeUpdate();
+                System.out.println(ret + " row deleted");
+            } catch (Exception ex) {
+                System.out.println("Error while executing statement " + ex);
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Connection error : " + ex);
+        }
+    }
+    
+
+Example: Select rows
+
+....
+ //3. Execute statements
+            String sql = "select * from dept";
+            try (PreparedStatement ps = cn.prepareStatement(sql)) {
+               ResultSet rs = ps.executeQuery();
+               while(rs.next()){
+                   System.out.println(rs.getInt("deptno") + " " + rs.getString(2) + " " + rs.getString(3));
+               }
+            } catch (Exception ex) {
+                System.out.println("Error while executing statement " + ex);
+            }
+....
+Example: Select row as per PK value
+.....
+//3. Execute statements
+            String sql = "select * from dept where deptno=?";
+            try (PreparedStatement ps = cn.prepareStatement(sql)) {
+                ps.setInt(1, 2);
+                ResultSet rs = ps.executeQuery();
+               if(rs.next()){
+                   System.out.println(rs.getInt("deptno") + " " + rs.getString(2) + " " + rs.getString(3));
+               }else{
+                   System.out.println("Dept not found");
+               }
+            } catch (Exception ex) {
+                System.out.println("Error while executing statement " + ex);
+            }
+.....
