@@ -1,0 +1,69 @@
+Data Access Object layer
+-------------------------------------------------------------------
+
+  Layer means logical seperation of code. 
+
+  Tier means physical seperation of code. May be code location is   remote and executed on different hardware & software.
+
+
+  Database                Can be                    Output of
+  Software      =====>   accessed            ====>    program
+   install      <==== progrmatically using   <==== can be target to
+  on Any OS            any programming lang       command prompt or
+                          & library                web-browser or                 					    windowing system
+   (Tier1)		 (Tier2)			(Tier3)
+
+  Any application you've developed using JavaSE & Java EE are example
+  of n-tier application.
+
+
+   Layer of code allow us to split our program logic into two or more
+   seperate components so we can easily debug, text, re-use each piece
+   of code.
+
+ In last session, we've created "Db" class and we will say it as "first  layer".
+
+ Now, we will create second and third layer for "Dept" and "Emp"  tables.
+
+1. Create Dept POJO - Plain Object Java Object (private fields,    getter/setter, override some methods, constructors).
+
+   POJO also known as "Java Beans" -- The smallest neutral comopnent    (do not write I/O statements in Beans).
+
+   POJO also known as "Model" class.
+
+
+package in.adc;
+
+public class Db { /* as per prev example */ }
+
+package in.adc.model;
+
+public class Dept {
+    private Integer deptNo;
+    private String deptName;
+    private String deptLocation;
+    ........
+}
+
+
+Now create an interface IDao with foll declaration:
+
+package in.adc;
+ 
+public interface IDao<T> {
+    boolean add(T obj);
+    boolean delete(T obj);
+    boolean update(T obj);
+    T get(T obj);   //Based upon PK field select a row
+    List<T> gets();
+}
+
+
+package in.adc.model;
+
+public class DeptDao implements IDao<Dept>
+{
+  //override methods
+  ...
+}
+
