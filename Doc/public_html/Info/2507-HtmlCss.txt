@@ -1,0 +1,123 @@
+Important : File and folder created under "TOMCAT_HOME/webapps" are
+	    case-sensitive so becareful while naming files/folder.             Always keep lower-case filename.
+
+            Index.html  is completely different than index.html
+
+
+HTML (HyperText Markup Language) 
+================================
+
+It is web-standard to present data on web. HTML is a "standard" recommended by World Wide Web Consortium - w3c.org or w3.org. At W3, industry experts discuss & define standards and software companies and tutors and students (educators) adopt these standards.
+
+
+Currently W3 working on HTML5 standard (HTML3 , HTML4 and XHTML standards are also used and will be used forever).
+
+
+There is another standard called "XML - eXtensible Markup Language" to describe data for programs/applications. That's why XML is called "data-interchange" format/protocol.
+
+Both, HTML & XML (and other) standards are derived from SGML - Standard Generized Markup Language.
+
+What is a markup?
+
+   It is a way to seperate things by surrounding pair of symbols (tags)    which sementically describe the things more effectively.
+  
+  e.g
+
+   <header>Malesian Air plane crashes</header>
+   <section>
+         something happens on <time format="yy-mm-dd">2010-10-21 10:10:20 PM</time>
+         at <em>ABC Airport</em>.
+
+   </section>
+   <footer><em>compiled by <strong>Mr.A</strong></em> on <time>2010--   </time></footer>     
+
+What is <!doctype html>
+-------------------------
+
+Each webpage must begins with <!doctype html>. If it is missed then you're in trouble.
+
+<!doctype html> is an instruction for web-browser to parse & render HTML markup in "standard Mode". If this directive is not found then web-browser parse & render HTML arbitry because in that case web-browser will be entered into "quirk or dirty mode".
+
+
+1. <html lang="en_US">  -- Always specify the page language.
+   <html lang="hi_IN">
+               en
+               hi
+
+   Search engine will classify pages based upon language.
+
+2. <head> used for:
+
+      1. To instruct the web-browser and access some of browser's
+         features 1) title 2) page cache
+      2. To embed resources (files -- css, js and other files)
+      3. To instruct the search engine about page and its purpose.
+
+      
+    Important: Cascade stylesheet resources (files) should be
+               glued (linked) under <head> section but
+               Javascript resources must appear just before the
+               close of </body> tag.
+
+              That way web-browser render the content without blocking.
+
+  e.g
+
+     ...
+     <head>
+        ....
+        <script src="file.js"></script>
+        ...
+     </head>
+        <h1>Hello</h1> <---- This will appear after loading "file.js"
+			     so if web-browser take 40 seconds to load
+				then Hello will be displayed after 40 
+				seconds.
+
+				So here, Javascript loading will block
+				the rendering of HTML.
+
+Best practice:
+
+ ...
+ <head>
+  ....
+  <link rel="stylesheet" href="styles/style.css"/>
+  ....
+ </head>
+ <body>
+    .....
+    .....
+    
+    <!-- Javascript code  (This is HTML comment) -->
+    <script src="js/sample.js"></script>
+    <script>
+         //javascript code
+    </script>
+  </body>
+
+
+OR better use "async" attribute (or differ attribute) to load external Javascript resources concurrently (threaded).
+
+    <script src="js/sample.js" async  onload="doInit()"></script>
+    <script>
+         function doInit() {
+             //code
+          }
+    </script>
+          
+
+<span>
+<div>
+<code>
+<em>
+<strong>
+<header>
+<footer>
+<nav>
+<>
+<article>
+<pre>
+
+<section>I am <span itemprop="name">KV</span> and I am the <span itemprop="author">CEO of <span itemprop="organization">ABC Ltd</span></span>
+</section>

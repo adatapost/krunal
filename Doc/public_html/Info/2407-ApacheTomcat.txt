@@ -1,0 +1,126 @@
+Apache-Tomcat Java EE Application Server
+=====================================================================
+
+ Application server is a software which hosts applications/software and  manage memory, resources, compilation and execution of hosted  applications.
+
+
+ In other words, application server is a "container" of applications.
+
+ There are number of application server exists but those who implements  Java EE specifications are called "Java EE Application Servers".
+
+
+ List of Java EE application servers:
+
+    1. Apache Tomcat from Apache Foundation (open source)
+    2. Glassfish from oracle (open source & commercial)
+    3. WebSphere from IBM
+    4. WebLogic Bea from IBM
+    5. JBoss from JBoss and many other vendors specific app servers.
+
+
+Install & Config the Apache Tomcat 
+---------------------------------
+
+1. Run with admin privileges
+2. Select Full + Set Http port : 8084 
+3. admin user : admin
+       pass   : admin
+
+4. Choose "destination folder" e.g x:\Tomcat8.0 (Do not use default    path)
+5. Open "Tomcat Monitor" with admin privi to start/stop application 
+   server.
+
+
+  After starting app server, open web-browser and type   http://localhost:8084 url at addressbar.
+
+
+Create Java EE web application and host/install it in app server.
+-------------------------------------------------------------------
+
+1. Open Apache Tomcat Home (x:\Tomcat8.0)
+2. Open "webapps" -- is called automatic deployment folder
+3. create a folder in "webapps" (say 'dhavan')
+4. open 'dhavan' folder and add
+
+    index.html (index.htm) file with following content
+
+
+ index.html
+-------------
+  <!doctype html>
+
+   <html lang="en">
+      <head>
+        <meta charset="utf-8"/>
+        <title>Welcome</title>
+      </head>
+      <body>
+         <h1>Welcome to Java EE Application server</h1>
+         <h2>We are using <strong>Apache Tomcat <em>Application</em>
+             server</strong></h2>
+         <h3>The name of my application is <strong>dhavan</strong></h3>
+         <hr/>
+         <div>
+            All kind of services for my application <code>dhavan</code>
+            will be provided by the <code>Application service</code>.
+         </div>
+       </body>
+     </html>
+
+5. Open web-browser with http://localhost:8084/dhavan
+
+   The application server looks for "index.xxxx" file and if it is    found then server it (copy it to web-browser).
+
+   http://localhost:8084/dhavan
+
+
+is equivalent to
+
+   http://localhost:8084/dhavan/index.html
+
+
+
+   You can choose .jsp extension to embed Java code into web-pages.
+
+   Use <% .... %> scriplet tag to embed Java code.
+
+ index.jsp
+ ---------
+
+ <!doctype html>
+
+ <%
+   String title = "Welcome";
+   String appServer = "Apache Tomcat 8.0";
+   String appName = "dhavan";
+ %>
+
+ <html lang="en">
+    <head>
+       <meta charset="utf-8"/>
+       <title><%=title%></title>
+    </head>
+    <body>
+       <ul>
+          <li>Application Server : <%=appServer%></li>   
+          <li>Application  : <%=appName%></li>
+        </ul>
+     </body>
+  </html>
+
+  <%=expression%> - is called expression tag to write data from   variable or literal at which it is used/embed.
+
+Example - sample1.jsp
+----------------------
+<!doctype html>
+
+<%
+  java.util.Date dt = new java.util.Date();
+%>
+
+<p>Today <%=dt%></p>
+
+  
+
+
+ 
