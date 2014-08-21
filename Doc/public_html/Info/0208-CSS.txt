@@ -1,0 +1,156 @@
+CSS Proprerties (continue)
+
+1. display: none;  Hide element
+   display: block; convert inline to block element. Block elements
+		   are share width of its parent element and we can
+		   set height/width manually. 
+
+		   body,div,h1 to h5, section etc are example of block
+		   element.
+
+   display:inline; convert an element to inline. Inline elements'
+		   width & height is calculated as per the content
+			they represent so we can't change height/width
+			explicitly.
+
+			span,label,code,b,i,u,sup,sub are example of
+			inline
+
+   display:inline-block; Elements have block & inline behavior. 
+			<input/>, select, textarea are example of
+			inline-block elements.
+
+2. float: none | left | right; Float the elements either left or right 				of its parent.
+
+3. clear: none | left | right | both; Remove the float effect.
+ 
+    float and clear are used to design the web-page structure.
+
+
+   eg.
+
+     block1
+     
+     block1       block2               block3
+    
+     block1 
+  
+     block1      block2
+
+
+Example:
+
+style4.css
+-----------
+.float-left { float: left;}
+.float-right { float: right;}
+.float-clear { clear:both;}
+
+.border{ border:1px solid #aaa;}
+
+.w-20p{ width:20%;}
+
+sample4.html
+------------
+....
+      <div class="float-left border">A</div>
+      <div class="float-right border">B</div>
+      <div class="float-left border">C</div>
+
+      <div class="float-clear"></div>
+      <div class="border">D</div>
+       
+      <div class="float-left border w-20p">E</div>
+      <div class="float-left border">Sample Text</div> 
+....
+
+
+Universal selector  * (astrisk) -- To select all HTML elements.
+
+e.g
+
+* {
+  margin:0px;
+  border:1px solid #aaa;
+}
+
+ALL HTML elements are set to 0 margin and border.
+
+
+Chidren selector 
+--------------------
+
+selector1 > selector2 {
+  
+} 
+
+ Select all children (at any level of depth (nested elements)).
+e.g
+
+div > * { border:1px solid #aaa;} 
+
+div > p { ... }
+
+#main > .test { .. }
+
+
+.class1 > .class2 { color: red;}
+
+
+<div class="class1">
+   <h1>aa</h1>
+   <p class="class2">aaa</p>
+   <div><div class="class2">AA</div></div>
+
+
+
+Pseudo selectors
+----------------------------------------------------------------
+
+pseudo selectors are actions of CSS properties. They allow us to set properties when mouse action, first letter of para, table's rows appearence and selection of text are performed.
+
+Syntax:
+
+selector:name-of-pseudo-selector {
+
+}
+
+We can use following psudo selectors:
+
+for <a/> hyperlinks:
+
+        active
+        visited
+        link
+        hover
+
+ex:
+
+a:visited{
+  color:red;
+}
+a:active{
+  background:green;
+  color:white;
+}
+a:link{
+  color:black;
+}
+a:hover{
+  background:red;
+  color:white;
+}
+
+
+
+Note: hover can be used with any "selector".
+
+div:hover{}
+
+#main:hover{}
+
+.test:hover{}
+
+
+         
+

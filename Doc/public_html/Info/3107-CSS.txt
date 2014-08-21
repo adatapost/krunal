@@ -1,0 +1,204 @@
+CSS - Cascading Stylesheet -- Style your HTML elements
+======================================================================
+
+ CSS properties are instructions to web-browser to set 
+ color, background, position, layout, margin, padding (spacing),
+ font & font-style, text-alignment, animation and many more.
+
+ Currenctly we are using CSS3 standard to define the CSS "selectors".
+
+  What is "selector"?
+
+      Selector is a group of CSS properties and later we can glue or       attach this (selector) group to one or more HTML elements.
+
+
+  Following are category/types of selectors:
+
+    1. tag selector
+    2. class selector
+    3. id selector
+    4. sibling selector
+    5. children selector
+    6. pseudo selector
+
+ How to glue/embed stylesheet resource to your web-page?
+ --------------------------------------------------------
+
+ 1. Presume that we've following context/virtual directory
+
+   /mitul/
+         |
+         |----/styles/
+                     style.css  <--- stylesheet resource/file
+         |
+         | sample.html
+
+sample.html
+------------
+<!doctype html>
+<html lang="en">
+  <head>
+      <title>Sample CSS</title>
+      <link rel="stylesheet" href="styles/style.css"/>
+   </head>
+   <body>
+     <div>
+        <h1>The Appleman Pvt Ltd</h1>
+        <h2>Software sales & services</h2>
+      </div>
+    </body>
+ </html>
+
+style.css
+------------
+/* tag selectors */
+ h1 {
+    color:red;
+    font-size:4em;  /* 1em = 100% */
+ }
+ h2 {
+    color:silver;
+    font-size:200%;
+ }
+  
+CSS selector - tag selector
+---------------------------
+
+ Tag name is used to define a group for CSS properties.
+
+ eg.
+
+ body {
+    font-size:1em;
+    background: #eeeeee;
+ }
+
+ Each CSS property-value pair must be seperate with ; (semi-colon) and
+ property name and value must be delimited with : (colon).
+
+  e.g  
+
+     height: 100px;
+     width: 50%;
+     border:1px solid red;
+
+  CSS Measurement units : You have to use relative measurement units
+			  to set font-size.
+
+		Relative measurement units :  em and % (percent)
+		Absolute units : px pt  in (inch) cm (centimetre)
+
+       Note: Never use pt, in and cm.
+
+  Color constants and hexadecimal value : Some color constants exists
+	in CSS including red, blue, green, yellow, magenta, pink, 	orange, black, white, and many more..
+
+        You can also use hexadecimal value:   #000000
+                
+                  first two digits represent red color
+		  next two                   green
+           and last two			     blue
+
+          e.g  color:#ff0000; /* red */
+               color:#00ff00; /* green */
+               
+           You can use shorthand expression if hex digit is repeated.
+
+             e.g   color:#ff0011  can be written as color:#f01;
+                   color:#dd2233  can be written as color:#d23;
+             but you can't use shorthand for color:#ff3466; 
+
+   You can use rgb(red,green,blue) css function which takes three
+	integer value between 0 to 255.
+
+         e.g color: rgb(255,0,0); or color:#ff0000; or color:#f00;     
+	   
+  multiple tag selectors
+  -----------------------
+   
+    To set common properties for one or more tag.
+
+     html, body, form, div {
+        margin:0px;
+        font-size:1em;
+      }
+
+     input[type="text"], input[type="password"] {
+         ....
+     }
+
+     input[name="username"], input[name="cmd"] { ... }
+
+
+
+Best practice: always reset margin for document structure elements:
+
+style.css
+----------
+html,body,div,h1,h2,h3,h4,h5,h6,header,
+footer,section,nav,table,form,article,
+ul,ol,li{
+  margin:0px;
+  /*border:1px solid #aaa;*/
+}
+
+CSS Properties
+=================
+
+1. margin:value;  -- To set "value" margin for all four edges.
+
+   margin:top right bottom left;
+        e.g  margin:0px 10px 0px 10px;
+             margin:0px auto; Use auto constant to let browser decide
+			      the margins.
+
+   shorthand properties:  
+                margin-left: 0px;
+                margin-right: 0px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+
+2. padding:value; -- To padd spaces
+
+        padding:top right bottom left;
+        shorthand properties: padding-left, padding-right, padding-        bottom and padding-top.
+
+3. background: color | url(image_file) -- To paint background of 		element using color or image.
+	
+      shorthand property for color: background-color: color;
+
+      background: url(image_file);
+
+                    url() is CSS function takes image file's relative
+		    path.
+
+      background: url(image_file) no-repeat; image at left + top
+
+      background:url(image_file) no-repeat left center;
+
+              Use following position constants: top, right, 				bottom,center,left
+
+     Multiple background:
+
+         div {
+            height:400px;
+            height:400px;
+            background: url(img1.png) no-repeat left top,
+                        url(img2.png) no-repeat right top,
+                        url(img3.png) no-repeat right bottom,
+                        url(img1.png) no-repeat left bottom,
+                        url(img2.png) no-repeat center center;
+            }
+
+
+
+      Repeat vertically,
+
+        background: url(file) repeat-y;
+
+      repeat horizontally,
+         background: url(file) repeat-x;
+
+
+       
+     

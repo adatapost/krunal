@@ -1,0 +1,1013 @@
+JavaScript
+===================================================================
+
+JavaScript is an OO programming language and mainly it is used to write programs which are executed on client-machine (web-browser).
+
+ Note that the JavaScript is also used to write server-side code using  NodeJS environment.
+
+
+Each & every web-browser has JavaScript Language + JavaScript APIs and JavaScript Runtime and we will use JavaScript for the following purposes:
+
+   1. JavaScript is the only programming language available in web-	browser to create objects, store/retrieve data into/from
+        memory, create arrays/collections, traverse data, loop 	statements, selection statements , class, functions etc.
+
+   2. Using JavaScript code we can change CSS properties and HTML 
+       attributes.
+   3. We can create new HTML elements programatically.
+
+   4. We can remove/manipulate HTML elements programatically.
+
+   5. We can request one or more resources programatically and this
+	process is called "Asynchronious JavaScript and XML - AJAX".
+
+   6. We can validate user's input.
+
+   7. We can generate graphics.
+
+   8. We can create animation.
+
+      Using JavaScript programming language number of frameworks are
+      exists like - jQuery, MooTools, EmberJS, AngularJS and thousands
+      of other libraries.
+
+JavaScript is a case-sensitive dynamic programming language and its code is embed into web-document via <script></script> HTML tag.
+
+
+JavaScript code is interpreted by JavaScript runtime (Engine).
+
+JavaScript is dynamic language - It means JavaScript assign/bounds datatype to value instead of variable. Secondly, JavaScript don't have explicit datatype names like other languages have (int,char,float...etc).
+
+Example:
+
+<!doctype html>
+
+<script>
+   var no = 10;
+</script>
+<h3>Use <var>var no = 10</var> to create variable</h3>
+
+<script>
+ console.log(no1); /* Open Developer Tools + Console Tab */
+</script>         /* console.log() will dump data at console */
+     
+
+Developer Tool is the developer's debugger for JavaScript code and you can understand, test and examine JavaScript code using this tool.
+
+Variables
+================
+
+Any entity you create will be added into "window" global namespace (package).
+
+Example:
+
+<script>
+  window.no = 10; 
+  no1 = 20; // is equivalent to window.no1 = 20
+  var no2 = 30; // also same as window.no2 = 30
+
+  console.log(window.no, window.no1, window.no2); 
+  console.log(no, no1, no2);
+
+
+</script>
+
+
+
+ Local scope variable
+ ----------------------
+
+  Use "var" keyword to create a local scope variable inside the   function. If "var" is not used then this variable will be global
+  implicitly.
+
+  <script>
+       no = 10; //global
+
+     function test() {
+        
+        var no = 0 ; // local
+     }
+
+     test(); //call 'test()'
+     console.log(no); 
+  </script>
+
+ NOTE: Always use 'var' keyword to create a variable. If that statement        is outside the function then it is global variable.
+
+
+  typeof() - to determine the type of data.
+   ----------------
+<script>
+   var no,nm;
+   nm = 'Raj';
+   console.log( typeof(no),typeof(nm));
+   nm =10;
+   no =10.10;
+   
+   console.log( typeof(no),typeof(nm));
+</script>
+     
+
+Determine the type of data and check whether it is empty or not.
+------------------
+
+<script>
+   var no;
+   no = 10;
+  if( typeof(no)=='undefined' ){
+      console.log("Empty");
+  }else{
+      console.log("Not Empty");
+  }
+</script>
+
+JavaScript boolean expressions returns false from following values. These values are known as "falsy" value.
+
+   0      
+   0.0 
+   ""
+    ''
+    null
+    undefined
+    false
+
+
+Ex:
+
+<script>
+
+  var no;
+  if(no){
+     console.log("Not Empty");
+  }
+  else {
+     console.log("Empty");
+  }
+
+ //multiple variables
+
+ 
+   var no,name;
+   no = 0;
+   name = "";
+   if(no && name){
+       console.log("Not Empty");
+   }else{
+       console.log("Empty");
+   }
+</script>
+
+
+Selection & loop statements
+-------------------------------------------------
+ C style if, switch, for, while and do while
+
+
+JavaScript array
+--------------------------------------------------
+ 
+  You can create arrays using :
+
+     1. [ ] - subscript literal
+     2. Array object
+
+<script>
+   
+   var nos = [10,20,30,40];
+ 
+   console.log(nos;length); // returns count of elements
+
+   console.log(nos[0],nos[1]);
+
+   console.log(nos);
+</script>
+
+
+ JavaScript arrays are indexed and value 0 is the first index.
+
+<script>
+   var nos = []; //empty array
+
+   console.log(nos);
+
+   nos[10] = 100;
+   nos[1] = "Rajesh"; 
+   nos[5] = "1-1-2002";
+
+   console.log(nos);
+</script>
+  
+
+
+Array traversal loop
+-------------------------------
+
+  for(varIndex in arrayVar)
+  {
+     //
+   }
+
+<script>
+   var nos = []; //empty array
+
+   nos[10] = 100;
+   nos[1] = "Rajesh"; 
+   nos[5] = "1-1-2002";
+
+   for(var index in nos){
+       console.log(index, nos[index]);
+   }
+  for(index in nos){
+       console.log(index, nos[index]);
+   }
+</script>
+
+
+Array functions
+-----------------
+
+push() - to append an element
+pop()  - to remove the last appended element.
+
+<script>
+ var nos = []; //empty array
+ 
+ nos.push(10);
+ nos.push(20);
+ nos.push(30);
+ 
+ console.log(nos.pop());
+ for(index in nos){
+    console.log(index, nos[index]);
+ }
+</script>
+
+
+splice(start,deletCount,items) -- To insert/remove/replace elements
+-----
+
+<script>
+ var nos = [10,20,30,40];  
+ console.log(nos);
+ nos.splice(0,0,1000); //insert at 0
+ console.log(nos);
+  nos.splice(2,0,2000); //insert at 2
+ console.log(nos);
+  nos.splice(4,1); //delete 4th index
+ console.log(nos);
+   nos.splice(1,2); //delete from 1 index to 1 and 2 index (2 items)
+ console.log(nos);
+  
+ nos.splice(1,1,90); //replace 20 (1st index)
+ console.log(nos);
+</script>
+
+
+
+JavaScript functions
+==================================================================
+
+ JavaScript function can be define via:
+
+ 
+  1.    function functionName(arguments...) { ... }
+
+  2.    var refName = function(argument...) {};
+
+  3.    (function(arg...){    <--- Inline function
+
+          })();
+
+Ex:
+
+<script>
+     
+   function add(no1,no2){
+       return no1+no2;
+   }
+   var mul = function(no1,no2) { return no1*no2;};
+
+    //call functions
+   
+   res=add(10,20);
+   console.log(res);
+   res= mul(20,3);
+   console.log(res);
+</script>
+
+JSON - JavaScript Object Notation - The declarative way to create an object.
+===================================================================
+
+ Syntax:
+ 
+  var refName = { propery1: value1, property2: value2,...};
+
+  var refName = {  <-- must appear at after assignment operator ( = )
+      prop1: value1,
+      prop2: value2,
+      ....
+   };
+
+   property name must be string and property value can be any TYPE. 
+
+<script>
+
+ var emp = { "id": 10, "name": "Rajesh", "salary": 2000.20 };
+
+ console.log(emp.id, emp.name, emp.salary);
+ console.log(emp["id"], emp["name"], emp["salary"]);
+
+ console.log(emp);
+
+ //add new properties
+
+ emp.address = "ABC society";
+
+ console.log(emp);
+</script>
+    
+
+
+List of Objects
+-------------------
+    var emps = [
+        {
+            "id": 10,
+            "name": "Raj"
+        },
+        {
+            "id": 20,
+            "name": "Mohan"
+        }
+    ];
+
+    for (index in emps) {
+        var e = emps[index];
+        console.log(e.id, e.name);
+    }
+
+DOM - Document Object Model
+========================================================
+ 
+ Each HTML tag in a web-page is parsed (validate and wellformed) and convert into HTML object called DOM
+by the web-browser or JavaScript.
+
+
+
+Obtain references of DOM(s) 
+---------------------------
+
+  We will use 'document' object and its methods to
+  obtain references of DOMs.
+
+  1. document.getElementsByTagName("tagName") - It returns
+	list of Nodes (NodeList).
+
+ Example:
+        <h1>Hello</h1>
+        <p>Para1</p>
+        <h1>Hi</h1>
+        <p>Test Para</p>
+        
+        
+ <script>
+   var list = document.getElementsByTagName("h1");  
+            
+   for(i=0;i<list.length;i++){
+       var h = list.item(i);
+       console.log(h);
+       
+        // h.textContent="A<b>B</b>C";
+        //h.innerHTML = "A<em>B</em>C";
+
+        var oldValue = h["textContent"];
+        console.log(oldValue);
+        h["innerHTML"]="This <em>is</em> innerHTML property";
+               h.style.color="#fa3";
+               h["style"]["background"]="#eee";
+      }
+ </script>
+ 
+
+Example: Select "text" and "submit" buttons
+
+  <script>
+   var list = document.getElementsByTagName("input");
+
+   for (i = 0; i < list.length; i++) {
+     var h = list.item(i);
+     console.log(h);
+     console.log(h.getAttribute("type"));
+     var attr = h.getAttribute("type");
+      if(attr == "text"){
+           h.value="10";
+       }
+       if(attr == "submit"){
+            h.style.opacity=.4;
+            h.style.backgroundColor="red";
+        }
+     }
+   </script> 
+
+Example: convert all input to "submit"
+
+   var list = document.getElementsByTagName("input");
+
+   for (i = 0; i < list.length; i++) {
+     var h = list.item(i);
+     h.setAttribute("type","submit");
+    }
+
+Example: Hides all DOMs having value of "name" attribute is "test".
+
+ <div name="test">One</div>
+ <div>Two</div>
+ <p name="test">Para1</p>
+ <p>Para2</p>
+ <input type="submit" name="test"/>
+
+ <script>
+   var list = document.getElementsByName("test");
+   for(i=0;i<list.length;i++){
+     var h = list.item(i);
+     h.style.display="none";
+   }
+ </script>
+
+
+Example: document.getElementById("id-value") - Returns
+         reference of given DOM if exists, returns null
+         otherwise.
+
+        <div id="info"></div>
+        <script>
+           var info = document.getElementById("info");
+           info.innerHTML = "This is the div.";
+        </script>
+
+Create a DOM and append it to existing DOM.
+=============================================
+
+  document.createElement("tagName") will create a DOM.
+
+  Example:
+
+   <div id="out"></div>
+
+   <script>
+ 
+      var out = document.getElementById("out");
+
+      //create new DOMs
+
+      var h1 = document.createElement("h1"); 
+      var h2 = document.createElement("h2");
+
+      //set DOM properties
+  
+      h1.innerHTML = "Heading1";
+      h2.innerHTML = "Heading2";
+
+      //append "h1" and "h2" DOMs to "out"
+
+      out.appendChild(h1);
+      out.appendChild(h2);
+ </script>
+
+Example: 
+Define an array which contains city names. Write JavaScript program to create & append <option> doms.
+
+Example:
+
+        <select id="city"></select>
+        <script>
+            var cities = ["Mehsana", "Patan", "Rajkot"];
+            var city = document.getElementById("city");
+            for(i in cities){
+                var op = document.createElement("option");
+                op.innerHTML = cities[i];
+                city.appendChild(op);
+            }
+        </script>
+
+Example: Write program to add <li> DOMs to <ol> DOM. [Use data from cities array].
+
+ <ol id="list"></ol>
+
+Example: We've following data:
+
+ var emps = [
+   { "id": 10, "name": "Rajesh" },
+   { "id": 20, "name": "Majesh" }
+  ];
+
+ Write JavaScript program to show them in HTML <table>.
+
+ 
+
+<table id="list"></table>
+
+ <script>
+ var emps = [
+   { "id": 10, "name": "Rajesh" },
+   { "id": 20, "name": "Majesh" }
+  ];
+  
+  var list = document.getElementById("list");
+  for(i in emps) {
+     var emp = emps[i];
+     
+     var tr = document.createElement("tr");
+     var td1 =  document.createElement("td");
+     var td2 =  document.createElement("td");
+     td1.innerHTML = emp.id;
+     td2.innerHTML = emp.name;
+ 
+     tr.appendChild(td1);
+     tr.appendChild(td2);
+
+     list.appendChild(tr);
+   }
+</script>
+
+
+Events 
+======================================================
+
+  HTML DOMS (Elements) allow us to attach our JavaScript  code (functions) to them and our functions will be  executed by DOM engine whenever appropriate event (especially changes in data) is fire or raise.
+  
+  For example, we want to execute following code when
+
+  mouse is clicked on "p" or "div" or "button" DOM.
+
+    <p onclick="doIt()">Para1</p>
+    <div onclick="doIt()">Div1</div>
+    <input type="button" onclick="doIt()"           value="Button1"/>
+
+   <script>
+      function doIt() {
+         console.log("Mouse button is clicked");
+       }
+   </script>
+
+
+   JavaScript event handler (a function which is glued to    DOM) can be attach to DOM via:
+
+     1. Declaratively syntax:
+
+         <tag   onevent_name="javaScriptMethodName()" ..>
+
+     2. Using DOM.
+
+         domRef.onclick = javaScriptMethodName;
+
+
+Example:
+
+        <div id="out">Click Me</div>
+        <div id="out1">Click Me</div> 
+        <div onclick="test()">Declaratively</div>
+
+        <script>
+            var out = document.getElementById("out");
+            out.onclick= test; //attach handler
+
+             function test(){
+                 console.log('Clicked');
+             }
+              //create & attach handler
+ document.getElementById("out1").onclick = function(){
+              console.log("Another handler");
+          };
+        </script>
+
+Example:
+
+  Enter Name : ___________  [Add]
+
+  ------------------
+  |              V |
+  ------------------
+
+  Add input content to dropdownlist when user clicks at  [Add] button.
+
+        <p>
+            Enter name : <input type="text" id="name"/>
+            <a href="#" onclick="addItem()">Add</a>
+        </p>
+        <p>
+            <select id="list"></select>
+        </p>
+        <script>
+           function addItem(){
+               var name = document.getElementById("name").value;
+               var list = document.getElementById("list");
+               
+               var opt = document.createElement("option");
+               opt.innerHTML = name;
+               list.appendChild(opt);
+           }
+        </script>
+
+Example:
+
+ Product Name   Qty    Rate
+ ____________   ____   _____  [Add]
+
+Add product name,qty and rate DOMs into a row of a table.
+
+-------------------------------------
+| Name    |  Qty    | Rate  | Amount|
+|-----------------------------------|
+| Pencil  |  2      | 5     | 10    |
+
+Example:
+
+   Change color of cell when user clicks.
+   |---------------|
+   |   |   |   |   |
+   |---------------|
+   |   |   |   |   |
+   -----------------
+ 
+
+parseFloat and parseInt JavaScript function
+------------------------------------------
+
+           var str = "100.20"; //convert string to number
+            var no1 = parseFloat(str);
+            var no2 = parseInt(str);
+            console.log(no1,no2);
+
+
+Example:
+
+ Set / reset "class-selector".
+
+    Use domRef.className = "classSelector" property
+
+ 
+        <style>
+            .active{
+                background:red;
+            }
+        </style>
+        <a href="#" onclick="doIt(this)">Home</a>
+        <a href="#" onclick="doIt(this)">About us</a>
+        <a href="#" onclick="doIt(this)">Contact us</a>
+        
+        <script>
+            function doIt(obj){
+               if(!obj.className)
+                   obj.className = "active";
+               else
+                   obj.className = "";
+            }
+        </script>
+
+     
+<style>
+            .active{
+                background:red;
+                color:white;
+            }
+            a{
+                text-decoration: none;
+                color:black;
+                padding:5px;
+                border-radius:10px;
+            }
+        </style>
+        <a href="#" name="nav" onclick="doIt(this)">Home</a>
+        <a href="#" name="nav" onclick="doIt(this)">About us</a>
+        <a href="#" name="nav" onclick="doIt(this)">Contact us</a>
+        
+        <script>
+            function doIt(obj){
+               var list = document.getElementsByName("nav");
+               for(i=0;i<list.length;i++){
+                   list.item(i).className="";
+               }
+             obj.className = "active";
+             
+             if(obj.textContent == "Home"){
+                 window.location.href="http://www.google.com";
+             }
+             else
+             if(obj.textContent == "About us"){
+                 window.location.href="about.html";
+             }
+            }
+        </script>
+
+
+
+ <p>Enter name : <input type="text" id="cityName"/>
+                 <input type="button" value="Add"
+                         onclick="doAdd()"/>
+ </p>
+                   <select id="cityList"></select>
+
+ <script>
+    function doAdd() {
+     var x = document.getElementById("cityName");
+  
+     var y = document.getElementById("cityList");
+  
+     var o = document.createElement("option");
+     o.innerHTML = x.value;
+     y.appendChild(o);
+  }
+</script>
+
+
+
+Handling "key" events
+=======================================================
+
+  onkeypress, onkeydown, onkeyup and onchange event
+  handlers must pass "eventArgument" parameter to
+  have event specific data.
+
+  e.g
+
+   <input type="text" onkeypress="testIt(event)"/>
+
+   <script>
+      function testIt(event) {
+         console.log(event);
+      } 
+    </script>
+  
+
+Example: Handle keypress event
+
+   <input type="text" onkeypress="testIt(event)"/>
+
+   <script>
+      function testIt(event) {
+         console.log(event);
+      } 
+    </script>
+
+Example: Input digits only
+
+    <input type="text" 
+            onkeypress="return digitsOnly(event)"/>
+    <script>
+      function digitsOnly(e vent) {
+          var ch = event.which;
+          if(ch>=48 && ch<=57)
+               return true;  //continue
+           return false;  //suppress input
+       } 
+     </script>
+
+Example: Input alhpabets & whitespaces
+Example: Input digits, alpha, whitespace and special chars          (, . - = )
+
+
+Example: onchange() will fire when you leave that input element.
+
+   <input type="text" onchange="squareIt(this)"/>
+   <p id="out"></p>
+   <script>
+      function squareIt(obj) {
+          var floatValue = parseFloat(obj.value);
+          if(floatValue){
+              document.getElementById("out").innerHTML = floatValue * floatValue; 
+          } else{
+               document.getElementById("out").innerHTML="";
+          }
+      } 
+    </script>
+
+Example:  
+ 
+ Program to update "amountDom" when value of "qtyDom" or "rateDom" is changed (use 'onkeyup' event).
+
+  Product: __________
+      Qty: ____
+     Rate: ____
+   Amount: ______
+
+
+JavaScript timer - setInterval() method
+-----------------------------------------------------
+
+ Your JavaScript code will be called automatically after
+ specified amount of time in millis is elasped.
+
+ Syntax:
+
+     var timerId = setInterval( function() {}, millis);
+
+     //Remove timer
+     clearInterval(timerId);
+
+Example:
+
+   <p id="out"></p>
+   <div id="dt"></div>
+   <script>
+       var count = 0;
+       setInterval(function(){
+           count++;
+           document.getElementById("out").innerHTML = count;
+       },1000);
+       setInterval(function(){
+  document.getElementById("dt").innerHTML = new Date();
+       },1000);
+    </script>
+ 
+
+
+
+Example: Start/Stop timer
+
+   <p id="out"></p>
+   <input type="button" value="Start" id="btnStart"/>
+   <input type="button" value="Stop" id="btnStop"/>
+   <script>
+       var count = 0;
+       var timerId = null;
+       document.getElementById("btnStart").onclick= function(){
+           timerId =setInterval(function(){
+               count++;
+               document.getElementById("out").innerHTML = count;
+           },1000);
+       };
+       document.getElementById("btnStop").onclick = function(){
+          clearInterval(timerId)  ;
+       };
+       
+    </script>
+
+<img src="images/1.jpg" id="out"/>
+   <input type="button" value="Start" id="btnStart"/>
+   <input type="button" value="Stop" id="btnStop"/>
+   <script>
+       var count = 0;
+       var timerId = null;
+       var images = ["1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg"]
+       document.getElementById("btnStart").onclick= function(){
+           timerId =setInterval(function(){
+               count++;
+               if(count>=images.length)
+                   count=0;
+               document.getElementById("out").src ="images/" + images[count];
+           },1000);
+       };
+       document.getElementById("btnStop").onclick = function(){
+          clearInterval(timerId)  ;
+       };
+       
+    </script>
+
+
+Example: Perform sub,sum,div and mul of two numbers.
+
+ No : <input type="text" id="no1"/>
+ No : <input type="text" id="no2"/>
+    <input type="button" 
+       onclick="calc('Sum')" value="Sum"/> 
+   <input type="button" 
+       onclick="calc('Sub')" value="Sub"/> 
+    <div id="result"></div>
+    <script>
+       function calc(cmd) {
+         var no1 = document.getElementById("no1");
+         var no2 = document.getElementById("no2");
+    var result = document.getElementById("result");
+         var res  = 0;
+
+         if(cmd == "Sum") {
+             res = parseFloat(no1.value) 
+                     + parseFloat(no2.value);
+          }
+          else if(cmd == "Sub") {
+             res = parseFloat(no1.value)
+                     - parseFloat(no2.value);
+          }
+
+          if(res) {
+             result.innerHTML = res;
+          } else {
+             result.innerHTML = "";
+          }
+       }
+    </script> 
+
+Example: Validate the <form>.
+
+   Submit buttons click handler (function) returns
+   true if input-fields are validated, returns false
+   otherwise.
+
+   The <form> elements wont be submitted if return    value of click handler is false.
+
+
+   <form method="post">
+      No : <input type="text" name="no1" id="no1"/>
+      No : <input type="text" name="no2" id="no2"/>
+      Country : <select name="country" id="country">
+                   <option value=''>Select</option>
+                   <option>India</option>
+                   <option>Nepal</option>
+                 </select>
+
+      <div id="message"></div>
+      <input type="submit" 
+             onclick="return validateIt()"
+             value="Submit"/>
+    </form>
+     <script>
+         function validateIt() {
+             if(required("no1") 
+                  && required("no2")
+                       && required("country"))
+                return true;
+
+            // alert('Please fill the input field');
+             showError("Please fill the input..");
+             return false;
+         }
+         function showError(str) {
+           document.getElementById("message").innerHTML = str;
+         }
+         function required(id){
+            return document.getElementById(id).value;
+         }
+     </script>  
+
+ 
+
+Example: Display one or more error message 
+
+1. replace <div id="message"></div>
+          with <ul id="message"></ul>
+
+2. 
+     function validateIt() {
+         var str = "";
+         if(!required("no1")) 
+             str = str + "<li>No1 is required";
+         if(!required("no2")) 
+             str = str + "<li>No2 is required";
+         if(!required("country")) 
+            str = str + "<li>Country is required";
+
+         showError(str);
+         return !str; // return str == "";
+       }	
+ 
+
+Example:
+
+<form method="post">
+      No : <input type="text" name="no1" id="no1"/>
+      No : <input type="text" name="no2" id="no2"/>
+      Country : <select name="country" id="country">
+                   <option value=''>Select</option>
+                   <option>India</option>
+                   <option>Nepal</option>
+                 </select>
+
+      <ul id="message"></ul>
+      <input type="submit" 
+             onclick="return validateIt()"
+             value="Submit"/>
+    </form>
+     <script>
+         function validateIt() {
+              var str = "";
+              if(!required("no1")) 
+                  str = str + "<li>No1 is required";
+              if(!isNumber("no1")) 
+                  str = str + "<li>No1 must have digits";
+              if(!required("no2")) 
+                  str = str + "<li>No2 is required";
+               if(!numberRange("no2",1,40)) 
+                  str = str + "<li>Range must be 1 to 40";
+
+
+            if(!required("country")) 
+             str = str + "<li>Country isrequired";
+
+              showError(str);
+              return !str;
+         }
+         function showError(str) {
+           document.getElementById("message").innerHTML = str;
+         }
+         function required(id){
+            return document.getElementById(id).value;
+         }
+       function isNumber(id){
+            return parseFloat(document.getElementById(id).value);
+         }
+     function numberRange(id,start,end){
+          if(!isNumber(id)) return false;
+          var v = parseFloat(document.getElementById(id).value);  
+              return v>=start && v<=end;
+         }
+     </script>  

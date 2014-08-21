@@ -1,0 +1,212 @@
+3. Semantic Tags - These tags can be used for different purposes that    means they don't have a specific usage. You can use them to present
+   your data as per your own description.
+
+   Following are example of semantic tags:
+
+     <div> - division - separate the markup.
+
+     <header> - header -- do --
+
+     <footer> - footer
+
+     <article> - separate the markup
+  
+     <section> - --do --
+  
+     <nav>     - navigation --do-- especially for navigation(links)
+
+     <aside>   - separate the markup
+
+     <span>    - do
+    
+     <pre>     - do -- Preserve the whitespaces.
+
+     <fieldset> - do - field set
+Traditional web page
+=====================
+
+<!doctype html>
+
+<html lang="en">
+ <head>
+    <meta charset="utf-8"/>
+    <title>Sample page</title>
+ </head>
+ <body>
+ <!-- Main Division -->
+ <div>
+    <!-- Header -->
+    <div>
+       <h1>Site title</h1>
+    </div>
+    <!-- Navigation -->
+    <div>
+       <a href="#">Home</a> ....
+    </div>
+    <!-- Content Area -->
+    <div>
+       <h2>Welcome to site</h2> 
+       .......................
+       <!-- Left Section -->
+       <div> .... </div>
+
+       <!-- Right Section -->
+       <div> .... </div>
+     </div>
+     <!-- Footer --->
+     <div>
+          <p>&copy; ABC Ltd</p>
+     </div>
+  </div>
+ </body>
+</html>
+ 
+ 
+
+HTML5 Standard page
+-----------------------------
+
+.....
+.....
+<body>
+ <!-- Main Division -->
+ <div>
+    <header>
+        <h1>Site Title</h1>
+    </header>
+    <nav>
+       <a href="#">Home</a>
+    </nav>
+    <section>
+        <aside> <!--Left-->
+           <div>Left</div>
+        </aside>
+       <aside> <!--Right-->
+           <div>Right</div>
+        </aside>
+     </section>
+     <footer>
+           <p>&copy; Copyright ABC Ltd - 2014</p>
+     </footer>
+ </div>
+</body>
+ 
+
+4. Text tags
+
+ <strong> -- bold face (<b> tag)
+
+ <em>     - emphesis   (<i> tag)
+
+ <code>   - display technical/programming text 
+
+ <kbd>    - monotype font text
+
+ <abbr/>  - abbreviation 
+ 
+ <sup>    - superscript 
+
+ <sub>    - subscript
+
+ 
+
+Never use <u>, <b> or <i> -- use <strong>, <em> or CSS properties.
+
+ <p>     - paragraph
+
+ <br/>   - line break
+
+ <hr/>   - Horizontal rule
+
+ 
+5. List or menu tags
+
+
+  <ol>  - ordered list
+  <ul>  - unordered list
+  <li>  - list item
+  <dd>  - data description
+  <df>  - data definition
+  <dt>  - data term
+
+6. Form and input tags
+
+  1. <form> -- form tag to create data envelop
+
+  2. <input type="text"/> - single line text
+
+  3. <input type="email"/> - email
+
+  4. <input type="number"/> - numeric
+
+  5. <input type="date"/> - date
+
+  6. <input type="radio"/> - radio
+
+  7. <input type="checkbox"/> - checkbox
+
+  8. <input type="file"/> - file selection
+
+  9. <input type="hidden"/> - hide data
+
+  10. <input type="color"/> - color selector
+
+  11. <input type="search"/> - search textbox
+
+  12. <input type="button"/> - non submit button
+
+  13. <input type="submit"/> - submit button
+  14. <input type="image"/> - submit button
+  15. <button></button> - submit & non-submit button
+  16. <input type="reset"/> -  reset button
+  17. <textarea></textarea> - nultiline textbox
+  18. <select size="n"></select> -- listbox
+  19. <select></select> - Dropdownlist
+  20. <label> - to label the input item.
+
+7. heading elements - h1 to h6
+
+
+All above mentioned HTML elements are falls into two groups:
+
+ 1. Block elements -- They share the width of parent element or web-			browser.
+
+ 2. Inline -- These elements size is calculated based upon the content
+		they hold. It means we cannot change height & width of
+		inline elements.
+
+8. Table elements
+
+    <table>,<thead>, <tfoot>, <tbody>, <tr>, <th> and <td>
+
+ IMPORTANT: Minimize the use of <table> elements because it takes too   much time to construct DOMs by the web-browser.
+
+
+9. hyperlink and bookmark <a> - anchor tag
+
+10. resource embed tags
+
+    <img src="imagefile"/>  -- read image resource
+
+    <link href="resource-file"/>   -- read resource file
+
+    <script src="javascript-resource"></script> -- Javascript resource
+
+    <video> -- video resource
+    
+    <audio> -- audio resource
+
+    <video>
+      <source src="filename"></source>
+    </video>
+    <audio>
+      <source src="filename"></source>
+    </audio>
+
+    <style> .. </style> -- Embed CSS selectors
+
+    <iframe src="resource"></iframe> -- Embed any resource.
+
+  
+
+    

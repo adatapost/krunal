@@ -1,0 +1,97 @@
+Java EE
+====================================================
+  
+  Java EE is a platform to develop & deploy enterprize   applications.
+
+  To develop and deploy Java EE apps, we must have Java EE
+  application server. [Apache-Tomcat, GlassFish, JBoss, WebLogic   Bea are example of Java EE application Server].
+
+  Application server might have one or more "containers" to   deploy different types of applications.
+
+  These containers can be :
+  
+        1. Web Container - To host Java EE web app
+   
+        2. EJB Container - To host Java EE Enterprize Java Beans
+			   applications.
+
+        3. Applet & application Container - To host client 				applications.
+
+ 
+  Applications (Web,EJB or client-App) created and bundled as per
+  Java SE, and EE standard.
+
+    Client applications, and libraries are bundled in a .jar     file. (Java Archieve)
+
+    Web applications are bundled into .war (Web Archieve)
+
+    Enterprize apps are bundled into .ear (Enterprize Archieve)
+
+
+   In netbeans or eclipse, you just need to "build" menu option
+   to create .jar, .war or .ear.
+
+
+   Once you create a bundle or distribution copy of your    application, you just drop it into "container's" auto-deploy
+   folder or use container's application deploy features    (configuration).
+
+
+   The Web Container and web application directory structure
+  ===========================================================
+
+  Java EE Web application must follow following directory
+  structure strictly.
+
+  /webapp/  <------ This is your context
+         |
+         |
+         |-----/META-INF/      <-- Must be in upper-letter
+                        manifest 
+                        context files.
+         |              [This folder contains instructions for
+         |               Java EE app server about application]
+         |
+         |----/WEB-INF/    <--- Must be in upper-letter
+                      |
+                      |
+                      |-----/classes/     Compiled .class files
+                      |
+                      |-----/lib/         .jar files
+                      |
+                      |-----/other_private_folders/
+
+                      [Files/Folder created inside the WEB-INF
+		       or META-INF are protected by the 
+		      application server and they are not 
+		      visible to public user/machine.
+         |
+         |
+         | - index.jsp and other public files
+         | - public folders for "css", "js", "images", etc.
+
+
+    Java EE Web app directory structure is case-sensitive. Any     type of file(image, css, js, html) or program you add into
+    the application must be accessed via the exact "filename" or     "foldername" or "program name".
+
+         
+    The Deployment Descriptor File - /WEB-INF/web.xml
+   ===========================================================
+    The web.xml file contains application configuration settings
+    through which we call instructs/tells the application
+    server about the need to our application, configure &     registration of servlets and filter classes, set     authentication (login) and many more things.
+
+    Each web-app must have a deployment descriptor (web.xml)     file.
+
+    Sample of web.xml file 
+    -----------------------
+
+     <web-app>
+         ......
+     </web-app>
+
+     Elements in web.xml are case-sensitive and they must be
+     strictly nested. The root element name of web.xml must be
+     <web-app>.
+
+          
+        

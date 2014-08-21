@@ -1,0 +1,134 @@
+10. overflow: none | auto | scroll; To set overflow behavior when height & width properties are set.
+
+11. font-family: family1,family2,...,default_family;
+
+     We've serif, sans-serif, monospace, cursive and      curtsy font-families.
+
+    font-family:"My Font","Your Font", "serif";
+
+       The web-browser first look for "My Font" in
+    client's system. If it is not there then search
+    for "Your font" and it is not present then it
+    select any fonts the belongs to "serif" family.
+
+    Note: Last font-family or font-name is known as
+		fall-back name.
+
+12. font-size:value; Always use em or % (percent) to
+    set font-size.
+
+13. font-weight:value; value between 100 to 900
+
+      value describe bold-face text.
+
+14. font-style:italic | none;
+
+15. font-variant: none | small-caps
+16. text-transform: none | uppercase | lowercase | 
+                       sentencecase<--- issue
+
+17. text-decoration: none | underline | overline | 			line-through
+
+18. text-align: none | left | right | center | justify
+
+
+
+Class selector
+==================================================
+
+Syntax:
+
+.user-defined-name
+{
+
+}
+
+class selector begins with . (period) and it is glue to HTML object via "class" attribute.
+
+e.g
+
+.box {
+  border:1px solid #aaa;
+  box-shadow:2px 2px 2px #eee;
+}
+
+<p class="box">This is box</p>
+<div class="box"> This is another box</div>
+<h1 class="box">Hey</h1>
+<input type="submit" class="box"/>
+
+Glue more than one "class" selectors:
+
+.bg-red { background: red; color:white;}
+.bg-green { background:green; color:white;} 
+.box { border:1px solid black; }
+.width-300 { width:300px;}
+.width-100 { width:100px;}
+.width-400 { width:400px;}
+
+<p class="bg-red box width-300">Three styles</p>
+
+<input type="text" class="bg-green width-400"/>
+
+
+id selector
+========================================
+Syntax:
+
+#user-defined-name { }
+
+#ID selector is glued to HTML using "id" attribute.
+
+#message { color:green; }
+
+<p id="message">Message here</p>
+
+
+
+Note: ID attribute is used by JavaScript to reference the HTML Object so value of "id" must be unique. It means you should not use "id" attribute for two or more elements.
+
+
+
+
+Child selector
+==========================================
+
+Syntax:
+
+selector1  selector-child {
+
+}
+
+e.g
+
+nav {
+
+}
+
+nav a {
+   /* anchor placed inside nav */
+} 
+  
+
+.sel1 {}
+
+.sel1 .sel2 {}
+ 
+Sibling selector
+=============================================
+Syntax:
+
+selector1 + selector2 {
+   /* set stype for selector2 which appears after
+      selector1 */
+}  
+
+h1+p{
+  color:green;
+}
+
+<h1>Introduction</h1>
+<p>This is about .....</p>
+<h1>Chapter - 1</h1>
+<p>This is all about chap1</p>
+

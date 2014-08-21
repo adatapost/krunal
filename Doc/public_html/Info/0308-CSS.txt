@@ -1,0 +1,61 @@
+2. ::selection or -moz-selection
+
+   To set text selection properties.
+
+::selection
+{
+  color:white;
+  background:red;
+}
+::-moz-selection
+{
+  color:white;
+  background:red;
+}
+
+3. :first-letter -- set properties for first letter
+   :first-line  -- set properties for first line.
+
+eg.
+
+p:first-letter{
+  font-size:2em;
+}
+p:first-line{
+  color:red;
+}
+
+ 
+4. :nth-child(odd) -- To set properties for odd row
+   :nth-child(even) - for even row
+   :nth-child(n) - to set properties for given row number.
+
+tr:nth-child(odd)
+{
+  background:#aaa;
+}
+tr:nth-child(even)
+{
+  background:#eee;
+}
+tr:nth-child(1)
+{
+  background:red;
+}
+
+
+5. :after and :before  - To insert content and style it before or after
+			 given selector.
+
+<div class="info">Hello !</div>
+
+.info:before
+{
+  content:'{';
+  font-size:5em;
+}
+.info:after
+{
+  content:'}';
+  font-size:5em;
+}  
