@@ -1,0 +1,95 @@
+Role of Servlet in Java EE WebApplication
+================================================================
+
+  The Servlet technology used in Java EE Web app to
+  perform following tasks:
+
+    1. Receive Data / instructions from the client (web-browser        or other programs - android or desktop or PHP or NET etc)
+
+    2. Process the data accordingly -- As per model (data) type.
+
+    3. Dispatch the generated markup to the web-browser or        client.
+
+       Servlet can produce different types of "output" including
+       video/audio streaming, streaming of binary documents (pdf,        images, video,audio, etc), generate XML , JSON, CSV and        text document.
+
+    4. Servlet API is used to create template engines through 
+       which we can generate dynamic content of        HTML/CSS/JavaScript. Most commonly used template engines
+       are - JSP, JSF, Velocity, Apache Wicket and many more.
+
+       The template engines are also known as "View Engine".
+
+
+       The View Engine
+       ---------------
+       We will use JSP as it is the default template engine. 
+       The Java Server Pages is another Java EE API created
+       from the Java Servlet APIs. The JSP technology allows
+       developer to write HTML, CSS, JavaSCript and Java code
+       into a programmble web page whose extension will be
+       .jsp.
+
+       Any file you saved as .jsp is itself a servlet. The View        Engine installed with your application server will
+       parse the .jsp (or other view documents if other view        engine is selected), creates a servlet class, compile that
+       servlet class and instruct the container to register that
+       servlet class.
+
+What are the major differences between Servlet and JSP(View)?
+--------------------------------------------------------------
+
+1. Servlet is Java class and it is not suitable to emit or    produce HTML markup.
+
+   The Servlet is best suited to perform any background task
+   including database, processing data, and many more.
+
+2. JSP is also a servlet but it is not created as we create    servlet class. The View Engine installed into application 
+   server will take care of JSP or View.
+
+   In JSP, we can have HTML,CSS/JavaScript and Java code and it 
+   is maily used to display markup on web-browser.
+
+   So here is a selection:
+
+         When we want to process data silently the we will use
+         servlet.
+
+         When we want to show or present data on the web, we 
+         must have to use "JSP" or "View".
+
+   NEVER add too much Java code in JSP because JSP is not suitable to process the data. It is the view and used to present
+   data on the web.
+
+
+How JSP page is processed? OR How the view engine works?
+------------------------------------------------------------
+
+ 1. When a very first request is made by the client, the container(app server) lookup the compiled class of requested resource into "Servlet Pool".
+
+     Servlet Pool is an array of Servlet objects which are
+     loaded and registered already.
+
+
+     If requested resource is not compiled then View Engine will
+     parse it (create .java file .e.g about.jsp will become      about_jsp.java), compile it (about_jsp.class) and hand over
+     this class to application server. The application server
+     will creates an object of that servlet and insert that 
+     object into ServletPool.
+     If requested resource (.JSP) file is modified at server side
+     then the view engine will perform above mentioned process.
+     
+
+     If requested resource's instance is exists in ServletPool      then the application server call the service() method by
+     passing HttpServletRequest and HttpServletResponse objects.
+     [Note: In Servlet, app server call doGet or doPost callback
+      based upon the request method. However in JSP, there isn't
+      a way to seperate the request method]
+
+ 2.  The JSP Servlet instance will be removed from ServletPool
+     when the .jsp file is updated/modified.
+
+     And on next request of modified page, the view engine parse,      compile and so on as per previous discussion.
+
+     The Servlet's class instance (a servlet created by us) will
+     remains into servlet pool till application servlet is      running or context is not stopped.
+
+       

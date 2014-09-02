@@ -1,0 +1,90 @@
+The Servlet & JSP
+==============================================================
+
+  The "Servlet" is a sub-class of javax.servlet.http.HttpServlet   class and it is the most important component -- it is the   backbone of Java EE Web application. In Java EE Web, everything
+  is servlet or servlet-alike.
+
+  What "is" Servlet?
+
+     The "Servlet" is a Java component/class which extends the
+     web-server's ability to receive HTTP Request and produce 
+     HTTP Response in the context of HTTP Request. In other 
+     words, the "Servlet" is an extention of "web-server".
+
+
+     Most importantly, the servlet class receive two types of
+     requests - GET and POST request.
+
+     GET Request is a HTTP request which comes from web-clients      (web-browser) in plain-text form. When we click on      hyperlinks, or type URL in addressbar are example of GET
+     request. We can have GET request via JavaScript code too.
+
+
+     POST request is a HTTP Request which comes from web-clients
+     in an array of encoded data (not encrypted). When we 
+     submit <form> and that form is marked at "post" method then
+     it is an example of POST request.
+     We can have POST request via JavaScript code too.
+
+  How the "Servlet" works?
+  =========================
+
+  In Java EE Web app, the "Servlet" is class and it has two
+  public methods "doGet" and "doPost" which are requested via
+  clients.
+
+  In order to create a servelt, we must have to create a "public"   sub-class of javax.servlet.http.HttpServlet class and override
+  doGet or doPost or both methods.
+
+  It is important to note that the sub-class of "HttpServlet"   must be created into named package.
+
+  After creating the sub-class of "HttpServlet", we must have to
+  register this "servlet" to the web-container (application     server). To register the servlet means to instruct the   application server to create a "public" name for servlet and
+  what kind of HTTP request it supports (GET OR POST OR BOTH).
+
+Example:
+
+package in.abc.servlets;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+@WebServlet("/first")
+public class FirstServlet extends HttpServlet {
+    @Override 
+    protected void doPost(HttpServletRequest request, 
+             HttpServletResponse response) 
+                  throws ServletException, IOException {
+        response.getWriter().println("POST Request");
+    }
+    @Override
+    protected void doGet(HttpServletRequest request, 
+             HttpServletResponse response) 
+                  throws ServletException, IOException {
+        response.getWriter().println("GET Request");
+    }
+}
+
+
+@WebServlet() is called annotation (Instruction). It instruct the application server about public name of servlet or "servelt url".
+
+  @WebServlet("/first")  means http://localhost/site-name/first
+                         
+  Users will request in.abc.servlets.FirstServlet via short &   friendly url "/first".
+
+
+create/open index.html (or any other name) page under "Web Pages" and write following code:
+
+<!doctype html>
+
+<body>
+  <a href="first">GET Request</a>
+  <form method="post" action="first">
+     <input type="submit" value="POST"/>
+  </form>
+  <form method="get" action="first">
+     <input type="submit" value="GET"/>
+  </form>
+</body>
+  
+  
+     
