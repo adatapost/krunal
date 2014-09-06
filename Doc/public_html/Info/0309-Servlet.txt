@@ -1,0 +1,290 @@
+ In which criteria we have to set to use the Servlets?
+ -------------------------------
+
+ Basically, the Servlet acts as a "controller" which receive
+ data/instructions from client, process the data and
+ dispatch appropriate result (view) to the client.
+
+
+ In this scinerio, the servlet is a "Controller" class.
+ The class represent data or database task are called "Model"  class.
+ The class represent "output" is called "View".
+
+ In other word, we must have to adhare the MVC design pattern  (Model-View-Controller) while developing JavaEE webapp.
+
+ WebClient----->Request------>Servlet
+   ^                              |
+   |                              V
+   |                          Process the Data and 
+   |--------------------      return the "View" to the
+      Response                client
+
+
+ What is MVC?
+
+  It is best design pattern to seperate the code into three
+  components -- Model, View and Controller.
+
+  In JavaEE we will create our own MVC framework to  develop
+  webapp however there are number of other MVC frameworks are
+  exists including Apache Struts, Spring, Java Server Faces and
+  so on.
+
+  In MVC (strict frameworks), any request made to the webapp must
+  receive by the "Controller - Servlet". 
+
+
+The JSP - Java Server Pages Technology
+=============================================
+
+ A .jsp page contains Java code along with HTML/CSS/JavaScript but the Java code is only to display/embed data into web-document.
+
+
+You can use following JSP Tags to embed Java code into .jsp (view).
+
+1. Scriptlet   tag
+
+    ASP Style	:	<%
+			  //statements will be placed inside the
+			  //service method
+                        %>
+
+   XML Style    :  <jsp:scriptlet>
+                     //statements
+                   </jsp:scriptlet>
+
+2. Expression tag
+  
+   To write expression into resopnse buffer (e.g out.print(10);)
+
+    ASP Style	: <%=expr%>
+    XML		: <jsp:expression>expr</jsp:expression>
+
+3. Declaration tag (Declarator)
+   ASP Style	: <%!
+		    //statements will be placed outside the
+		    // service method
+                   %>
+   XML 		: <jsp:declaration>
+                     //
+                  </jsp:declaration>
+
+In addition to these tags, we have following objects into the .jsp page. These objects are known as -- Implicit JSP Objects --.
+
+JSP Implicit Objects
+=============================================================
+These objects are exists inside the "service()" method and we will use following reference variables:
+
+ out	-	Instance of JspWriter (PrintWriter) to write
+		data into response buffer (output).
+
+ page   -	Instance of current JSP page
+
+ pageContext -   It represent servlet "context" object reference.
+
+ request	- It represents HttpServletRequest
+
+ response 	- It represents HttpServletResponse
+
+ session	- It represents Session (HttpSession)
+
+ application	- It represents Application context
+
+ cookie		- It represents cookie object
+
+Example-1
+
+ <body>
+        <%
+            int no = 10;
+        %> 
+        <jsp:scriptlet>
+            String name = "Rajesh";
+        </jsp:scriptlet>
+        
+        <h1><%=no%></h1>
+        <jsp:expression>name</jsp:expression>
+        <jsp:expression>about()</jsp:expression>
+        
+        <%!
+           String about() {
+               return "Mr. ABC";
+           }
+        %>
+    </body>  
+
+
+JSP Directives
+=============================================================
+
+ These are instructions to the View Engine and Application Server.
+
+  There are three directives:
+
+    1. page
+    2. include and
+    3. taglib
+
+  1. <%@ page language="java" ....... %>
+
+     The <%@page%> directive must appear at the top of .jsp and
+     we can instruct the view engine via its attributes.
+
+     language attribute : The default value of language attribute
+			  is "java" and it remains "java".
+      contentType       : To set page output MIME - Multiple
+                          Mail Exchange.
+
+<%@page  contentType="text/plain" pageEncoding="UTF-8"%>
+no,name
+<%
+    for(int i=1;i<=10;i++){
+        out.println(i + ",Name" + i );
+    }
+%>    
+   
+Example - 3
+
+<%@page  contentType="text/xml" pageEncoding="UTF-8"%>
+<students>
+  <student>
+    <roll>10</roll>
+    <name>Rajesh</name>
+  </student>
+</students>
+
+Example - 4 - Write image content
+
+<%@page  contentType="image/png" pageEncoding="UTF-8"%>
+<!-- code to write image data -->
+
+
+3. import attribute to import java packages.
+
+   <%@page import="java.util.*,java.text.*" %>
+
+       <%
+        Date now  = new Date();
+        SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+        String strDate = sdf.format(now);
+        %>   
+        <h1><%=strDate%></h1>
+
+
+4. Error handling attributes - errorPage and isErrorPage
+
+To define "error" page (which displays exception message), set isErrorPage="true".
+
+my-error.jsp
+-----------------   
+<%@page  isErrorPage="true" %>
+.....
+<body>
+  <h1>Error!</h1>
+  <div><%=exception%></div>
+</body>
+
+To redirect on my-error.jsp when an exception is raised into .jsp pages.
+
+index.jsp
+----------------------
+<%@page errorPage="my-error.jsp"%>
+....
+....
+<%
+  int no[]=new int[2];
+  nos[3] = 10;
+%>
+
+
+The "exception" is an implicit JSP object but it is exists in "error" page.
+
+2. <%@taglib %> - This directive is used to register the Tag    libraries developed using Java EE Tag library API.
+
+    JSTL - Java Server Pages Standard Tag Library is an example
+    of Tag library.
+
+3. <%@include %> directive - It reads the content of specified
+   file and insert into current JSP page before the page
+   goes to parsing.
+
+ Syntax:  <%@include file="url" %>
+
+first.txt   (you can choose your own extension however choose
+-----------  .jspf - JSP fragment)
+<h1>From first.txt</h1>
+<%
+  for(int i=1;i<=10;i++)
+   {
+    out.println("<br/>" + i);
+   }
+%>
+
+second.jsp
+----------
+<h1>From second.jsp</h1>
+
+third.jspf
+----------
+<h1>From Third.jspf</h1>
+<%=new java.util.Date()%>
+
+index.jsp
+-----------
+...
+<body>
+  <h1>Home</h1>
+  <%@include file="first.txt"%> 
+  <%@include file="second.jsp"%>
+  <%@include file="first.txt"%>
+  <%@include file="third.jspf"%>
+</body>
+
+Example: Multipage website design
+------------------------------------
+  /
+  |
+  |----/templates/
+                 header.jspf
+                 footer.jspf
+  |
+  | index.jsp and other pages
+
+/templates/header.jspf
+----------------------
+<!doctype html>
+<html>
+  <head><title><%=title%></title></head>
+  <body>
+    <div>
+       <header>
+         <a href="index.jsp">Home</a>
+         <a href="about.jsp">About us</a>
+       </header>
+       <section>
+
+/templates/footer.jspf
+-----------------------
+        </section>
+        <footer>
+          <p>1998-2014 &copy; ABC</p>
+        </footer> 
+      </div>
+   </body>
+</html>
+
+/index.jsp
+---------
+<% String title = "Home" %>
+<%@include file="templates/header.jspf"%>
+<h1>Welcome Home</h1>
+<%@include file="templates/footer.jspf"%>
+
+/about.jsp
+---------
+<% String title = "About us" %>
+<%@include file="templates/header.jspf"%>
+<h1>About us</h1>
+<%@include file="templates/footer.jspf"%>
+ 
+  
