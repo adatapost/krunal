@@ -1,0 +1,177 @@
+ Send & Receive between servlets & JSPs
+ ---------------------------------------------------------------
+  
+  There are number of ways to exchange data between servlets,   servltes-JSPs and JSPs.
+
+  1. Receive <form> data from client.
+
+     In servlets or JSPs, you can receive client data
+     using request object of HttpServletRequest component.
+
+     We will use request.getParameter("name") method to read
+     client data. 
+ 
+         String HttpServletRequest#getParameter("name") returns
+         value of speicified "name or key", returns null if
+         specified "name" is not exists.
+
+
+     Example: JSP to JSP 
+
+     page1.jsp
+     ----------
+     <a href="page2.jsp?no=10&name=Rajesh Shah">Send Data</a>
+
+     page2.jsp
+     ----------
+     <%
+      //Receive client data 
+      String no = request.getParameter("no");
+      String name = request.getParameter("name");
+      out.println(no + " " + name);
+      %>
+
+      page3.jsp
+      ---------
+      <form action="page2.jsp">
+         <p>No: <input type="text" name="no"/></p>
+         <p>Name: <input type="text" name="name"/></p>
+         <p><input type="submit"/></p>
+      </p>
+
+ page1.jsp and page3.jsp send data by requesting to "page2.jsp"  via GET request method. However you may change <form  method="POST"> method.
+
+ page3.jsp can receive GET as well as POST request data because  there isn't direct way to separate the request in JSP and that
+ is the main reason not to use JSP page to recive FORM data.  Always use "Servlet's doGet or doPost".
+
+   QueryString
+   -----------
+
+     QueryString is collection of pair of name=value separated
+     by & sign.
+
+        no=10&name=Raj
+  
+     The ? question mark char separate "querystring" from "url".
+
+
+  POST Vs GET Request
+  --------------------
+
+   GET Request is plain-text and data appened to the URL so these
+   data can be viewable & editable. There is some data-length 
+   restriction imposed by the web-browsers for GET request (it    might 4000 to 8000 bytes).
+
+   You cannot send binary data via GET request.
+
+   With POST request, you can send huge amount of data (no data-   length restriction) along with binary data (file upload).
+   POST request data are encoded (tranformed into byte array) and
+   send to server application.
+
+   Always use POST request to send data especially login data, 
+   data to be written or used with database or file IO.
+
+   You can use GET request for those data which are used for read
+   purposes.
+
+   Default request type is GET.
+
+   You can request server resource via JavaScript language    (called AJAX) using GET or POST request.
+
+  
+   NEVER USE JSP code to receive <form> data. We must have to use
+   Servlet to receive <form> data.
+
+
+ 2. Receive data via Servlet's doGet or doPost method.
+
+    sample1.jsp
+    -----------
+    <form method="post" action="emp">
+       <p>No:<input type="text" name="no"/></p>
+       <p>Name:<input type="text" name="name"/></p>
+       <p><input type="submit"/></p>
+     </form>
+
+     Create a servlet having "/emp" url pattern
+
+     @WebServlet("/emp")
+     public class EmpServlet extends HttpServlet {
+       @Override
+       public void doPost(HttpServletRequest request,
+		HttpServletResponse response)
+			throws IOException,ServletException {
+            String no = request.getParameter("no");
+            String name = request.getParameter("name");
+            //See output in output / debug window
+            System.out.println(no + " " + name);
+            //Output at web-browser
+            PrintWriter pw = response.getWriter();
+            pw.println(no + " " + name);
+       }//End doPost
+      }
+
+
+Redirect the request
+-----------------------------------------------------------
+ 
+ To redirect the request means to transfer user from one page
+ to another page programatically.
+
+ Firstly we will learn RequestDispatcher way to redirect the 
+ request.
+
+ RequestDispatcher allow us to forward data to requested resource  and requested resource might forward data to other requested
+ resources.
+
+ For example:
+
+ client's request is for /emp (servlet) --> /emp servelt request
+					    the another servlet
+					    or JSPs and so on.
+
+
+
+Example: A form submit data to the server and based upon its 
+         correctness the servlet decide which JSP should be 
+         forwared to the client.
+
+1. code in servlet (/emp)
+   
+   code in doGet()
+   ----------------
+    //Create new request
+    RequestDispatcher disp = request
+                  .getRequestDispatcher("/emp-page.jsp");
+    disp.forward(request, response);
+
+   code in doPost()
+   ----------------
+        String no = request.getParameter("no");
+        String name = request.getParameter("name");
+        boolean isValid=true;
+        String fileName = "/fail.jsp";
+  
+        if(name==null || name.length()==0)
+            isValid=false;
+        try {
+            Integer.parseInt(no);
+        } catch (Exception e) {
+            isValid=false;
+        }
+        if(isValid){
+            fileName="/success.jsp";
+        }
+        
+        request.getRequestDispatcher(fileName)
+               .forward(request, response); 
+2. success.jsp
+   <h1>Success</h1>
+3. fail.jsp
+   <h1>Fail</h1>
+3. emp-page.jsp
+   ------------
+   <form method="post" action="emp">
+     same as previous
+
+IMPORTANT : File name must be / (root) directed for             requestDispacher. (e.g /emp-page.jsp, /success.jsp)
