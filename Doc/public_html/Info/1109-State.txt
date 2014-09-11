@@ -1,0 +1,140 @@
+ Java EE State Management Techniques
+ -----------------------------------------------------------
+
+ State means "Data". You can preserve the data or state
+ between page / servlet requests, within the same page/servlet,
+ till user/client is connected or to all connected user.
+
+ In Java, we have following scopes:
+
+   1. page scope  -- Data will stored into memory till current
+		     page/servlet is active. They will be
+		     discarded when web-brower is closed or
+		     new page/servlet is requested.
+
+   2. request scope - Data will be stored into memory where the
+			requested servlet or page access them.
+        		They are discarded once requested page
+			execution is over.
+
+   3. session scope - Data will be stored into memory till
+			web-browser is not closed. It means
+			they are available into one or more
+			pages/servlet once they are created.
+
+   4. application scope - Data will be stored into memory where
+			  they have application scope. These
+			  data remains into memory till an
+			  application is up. They will be 			  discarded when app is shutdown or
+			  restarted.
+
+ [NOTE: All four state management techniques uses "server" memory   (RAM) to store data and they are in temporary state.]
+ 
+  If you wish to store data permenantly then use file I/O, or   DBMS.
+ 
+
+  In JSP page we will use following Implicit objects:
+
+   1. pageContext
+   2. request 
+   3. session and
+   4. application
+
+  All four objects have following methods:
+
+   setAttribute("key",value) - To push data into an object
+                               (or To bound data/object)
+   removeAttribute("key")    -  To remove key-value pair or
+				unbound data/object.
+
+   getAttribute("key")       - Returns null of given key not
+				exists, returns value otherwise.
+
+ 
+ In Servlet, we have three scoped objects: request, session and
+ application.
+
+ The request object is of HttpServletRequest class.
+ The session is of HttpSession and
+ The application is of ServletContext.
+
+ You can obtains reference of session and application object
+ via  HttpServletRequest object.
+
+  HttpSession session = request.getSession();
+
+  ServletContext app = request.getServletContext();
+
+ All four state are Dictionary or Map - unique key and value  pair. The return type of getAttribute() is java.lang.Object
+ so we must have to cast to retrive data from the scoped objects.
+
+ e.g
+
+  pageContext.setAttribute("no",10);
+
+  Integer no = (Integer) pageContext.getAttribute("no");
+
+  if( no != null ) {
+     //
+  }
+  
+
+
+Example:
+
+ index.jsp   : Add some data into the "scoped" objects
+ ----------
+
+
+ <%
+  pageContext.setAttribute("no", 10);
+  request.setAttribute("no", 100);
+  session.setAttribute("no", 1000);
+  application.setAttribute("no", 10000);
+  
+  out.println("<br/>Page : " + pageContext.getAttribute("no"));
+  out.println("<br/>Request : " + request.getAttribute("no"));
+  out.println("<br/>Session : " + session.getAttribute("no"));
+  out.println("<br/>Application : " 
+                    + application.getAttribute("no"));
+%>    
+
+<a href="page1.jsp">Page1</a>
+
+
+ page1.jsp
+ -----------
+ <%
+  out.println("<br/>Page : " + pageContext.getAttribute("no"));
+  out.println("<br/>Request : " + request.getAttribute("no"));
+  out.println("<br/>Session : " + session.getAttribute("no"));
+  out.println("<br/>Application : " 
+                    + application.getAttribute("no"));
+  %>
+
+page and request scoped value will be null because these objects
+are unbounded.
+
+
+Example: Modify previous (MVC) app to display data sent via servlet into emp.jsp page.
+
+.....
+.....
+as per previous example...
+<%
+ String msg = request.getAttribute("message");
+ if(msg!=null) {
+   out.print(msg);
+ }
+%>
+
+And also change the code in doPost method of /emp servlet.
+
+ ...
+ ...
+     if(EmpDao.add(emp)) 
+         request.setAttribute("message","Emp added");
+     else
+         request.setAttribute("message","Cannot add Emp");
+ ....
+ ....

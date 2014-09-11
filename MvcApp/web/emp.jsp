@@ -11,5 +11,7 @@
         <p><input type="text" name="joinDate" id="joinDate"/></p>
         <p><input type="submit" name="cmd" value="Submit"/></p>
     </form>
+    <%=request.getAttribute("message")%>
+            
 </div>
 <%@include  file="templates/footer.jspf" %>

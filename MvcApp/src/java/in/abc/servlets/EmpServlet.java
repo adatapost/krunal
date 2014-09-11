@@ -5,9 +5,10 @@
  */
 package in.abc.servlets;
 
-import in.abc.model.Emp;
-import in.abc.model.EmpDao;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +34,36 @@ public class EmpServlet extends HttpServlet {
             cmd = ""; //remove null;
         }
         if ("Submit".equals(cmd)) {
-            Emp emp = new Emp();
+            boolean isLoaded = false;
+            try{
+                Class.forName("oracle.jdbc.OracleDriver");
+                isLoaded = true;
+            }catch(Exception ex){
+                System.out.println("Error while loading DRIVER :" + ex);
+                 request.setAttribute("message", "Driver is not loaded");
+            }
+            
+            if(isLoaded){
+                String sql = "insert into emp values (?,?,?)";
+                try(Connection cn=DriverManager.getConnection("jdbc:oracle:thin:@localhost", "dhavan", "dhavan")){
+                    try(PreparedStatement st = cn.prepareStatement(sql)){
+                        st.setInt(1, Integer.parseInt(empNo));
+                        st.setString(2,empName);
+                        st.setDate(3, java.sql.Date.valueOf(joinDate));
+                        
+                        st.executeUpdate();
+                        request.setAttribute("message", "Emp added successfully.");
+                    }catch(Exception ex){
+                        System.out.println("Error while executing SQL statement : " + ex);
+                        request.setAttribute("message", "Error executing insert SQL");
+                    }
+                }catch(Exception ex){
+                    System.out.println("Erro while connecting database : " + ex);
+                     request.setAttribute("message", "Connection error");
+                }
+            }
+            
+           /* Emp emp = new Emp();
             emp.setEmpNo(Integer.parseInt(empNo));
             emp.setEmpName(empName);
             emp.setJoinDate(java.sql.Date.valueOf(joinDate));
@@ -41,7 +71,7 @@ public class EmpServlet extends HttpServlet {
                 System.out.println("Emp added");
             } else {
                 System.out.println("Cannot add emp");
-            }
+            }*/
             /*
              try(Db x=new Db("insert into emp values (?,?,?)")){
              x.getSt().setInt(1, Integer.parseInt(empNo));
