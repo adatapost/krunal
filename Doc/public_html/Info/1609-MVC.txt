@@ -1,0 +1,410 @@
+ Example: MVC with request state
+ -------------------------------------------------------------
+
+ 1. Emp.java
+-----------------
+import java.sql.Date;
+import java.util.Objects;
+
+/**
+ *
+ * @author admin
+ */
+public class Emp {
+   private Integer empNo;
+   private String empName;
+   private java.sql.Date joinDate;
+
+    public Emp() {
+     empNo=0;
+     empName="";
+     joinDate = new Date(System.currentTimeMillis());
+    }
+    
+
+    public Emp(Integer empNo, String empName, Date joinDate) {
+        this.empNo = empNo;
+        this.empName = empName;
+        this.joinDate = joinDate;
+    }
+
+    public Emp(Integer empNo) {
+        this.empNo = empNo;
+    }
+
+    public Integer getEmpNo() {
+        return empNo;
+    }
+
+    public void setEmpNo(Integer empNo) {
+        this.empNo = empNo;
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Emp{" + "empNo=" + empNo + ", empName=" + empName + ", joinDate=" + joinDate + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.empNo);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Emp other = (Emp) obj;
+        if (!Objects.equals(this.empNo, other.empNo)) {
+            return false;
+        }
+        return true;
+    }
+   
+}
+
+
+2. EmpDao.java
+--------------------
+
+public class EmpDao {
+    /* Add Employee */
+
+    public static boolean add(Emp emp) {
+        try (Db x = new Db("insert into emp values (?,?,?)")) {
+            x.getSt().setInt(1, emp.getEmpNo());
+            x.getSt().setString(2, emp.getEmpName());
+            x.getSt().setDate(3, emp.getJoinDate());
+            x.execute();
+            return true;
+        } catch (Exception ex) {
+            System.out.println("EmpDao#Add :" + ex);
+            return false;
+        }
+    }
+    /* Update Employee */
+
+    public static boolean update(Emp emp) {
+        try (Db x = new Db("update  emp set emp_name=?,join_date =? where emp_no=? ")) {
+
+            x.getSt().setString(1, emp.getEmpName());
+            x.getSt().setDate(2, emp.getJoinDate());
+            x.getSt().setInt(3, emp.getEmpNo());
+            x.execute();
+            return true;
+        } catch (Exception ex) {
+            System.out.println("EmpDao#Update :" + ex);
+            return false;
+        }
+    }
+
+    /* Delete Employee */
+    public static boolean delete(Emp emp) {
+        try (Db x = new Db("delete from   emp where emp_no=? ")) {
+            x.getSt().setInt(1, emp.getEmpNo());
+            x.execute();
+            return true;
+        } catch (Exception ex) {
+            System.out.println("EmpDao#Delete :" + ex);
+            return false;
+        }
+    }
+
+    /* Get Employee */
+    public static Emp get(Emp emp) {
+        try (Db x = new Db("select * from  emp  where emp_no=? ")) {
+            x.getSt().setInt(1, emp.getEmpNo());
+            Object[] ar = x.row();
+            if (ar != null) {
+                Emp search = new Emp();
+                search.setEmpNo(Integer.parseInt(ar[0].toString()));
+                search.setEmpName(ar[1].toString());
+                search.setJoinDate((java.sql.Date) ar[2]);
+                return search;
+            }
+
+        } catch (Exception ex) {
+            System.out.println("EmpDao#Get :" + ex);
+
+        }
+        return null;
+    }
+
+    /* Get Employees */
+    public static List<Emp> gets() {
+        List<Emp> list = new ArrayList<Emp>();
+        try (Db x = new Db("select * from  emp ")) {
+            for (Object[] ar : x.rows()) {
+                Emp search = new Emp();
+                search.setEmpNo(Integer.parseInt(ar[0].toString()));
+                search.setEmpName(ar[1].toString());
+                search.setJoinDate((java.sql.Date) ar[2]);
+                list.add(search);
+            }
+
+        } catch (Exception ex) {
+            System.out.println("EmpDao#Gets :" + ex);
+
+        }
+        return list;
+    }
+}
+
+3. Db.java
+------------------
+
+public class Db implements AutoCloseable {
+
+    public final static String URL = "jdbc:oracle:thin:@localhost";
+    public final static String USERNAME = "dhavan";
+    private final static String PASSWORD = "dhavan";
+    private final static String DRIVER = "oracle.jdbc.OracleDriver";
+
+    static {
+        try {
+            Class.forName(DRIVER);
+            System.out.println("Driver Loaded successfully.s");
+        } catch (Exception e) {
+            System.out.println("Cannot load driver " + e);
+        }
+    }
+
+    private Connection cn;
+    private PreparedStatement st;
+    private ResultSet rs;
+
+    public static Connection getCn() throws Exception {
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+    }
+
+    //Constructor
+    public Db(String sql) throws Exception {
+        cn = getCn();
+        st = cn.prepareStatement(sql);
+    }
+
+    public PreparedStatement getSt() throws Exception {
+        return st;
+    }
+
+    public int execute() throws Exception {
+        return st.executeUpdate();
+    }
+
+    public Object[] row() throws Exception {
+        Object[] ar = null;
+        rs = st.executeQuery();
+        if (rs.next()) {
+            int column = rs.getMetaData().getColumnCount();
+            ar = new Object[column];
+            for (int i = 0; i < column; i++) {
+                ar[i] = rs.getObject(i + 1);
+            }
+        }
+        return ar;
+    }
+
+    public List<Object[]> rows() throws Exception {
+        List<Object[]> list = new ArrayList<>();
+
+        rs = st.executeQuery();
+        while (rs.next()) {
+            int column = rs.getMetaData().getColumnCount();
+            Object[] ar = new Object[column];
+            for (int i = 0; i < column; i++) {
+                ar[i] = rs.getObject(i + 1);
+            }
+            list.add(ar);
+        }
+        return list;
+    }
+
+    public void dispose() {
+        if (cn != null) {
+            try {
+                cn.close();
+            } catch (Exception e) { /* */            }
+        }
+        if (st != null) {
+            try {
+                st.close();
+            } catch (Exception e) { /* */            }
+        }
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (Exception e) { /* */            }
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        System.out.println("Auto Disposing resources...");
+        dispose();
+    }
+
+}
+
+4. U.java
+--------------
+public class U {
+
+    public static int toInt(Object obj) {
+        try {
+            return Integer.parseInt(obj.toString());
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+
+5. EmpServlet.java
+---------------------
+
+@WebServlet(name = "EmpServlet", urlPatterns = {"/emp"})
+public class EmpServlet extends HttpServlet {
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Receive Data
+        String empNo = request.getParameter("empNo");
+        String empName = request.getParameter("empName");
+        String joinDate = request.getParameter("joinDate");
+        String cmd = request.getParameter("cmd");
+        String message = "";
+        
+        Emp emp = new Emp();
+        //emp.setEmpNo(Integer.parseInt(empNo));
+        emp.setEmpNo(U.toInt(empNo));
+        if ("Add".equals(cmd)) {
+            emp.setEmpName(empName);
+            emp.setJoinDate(java.sql.Date.valueOf(joinDate));
+            if (EmpDao.add(emp)) {
+                message = "Empoyee added successfully";
+            } else {
+                message = "Cannot add employee";
+            }
+        } else if ("Search".equals(cmd) || "Select".equals(cmd)) {
+            Emp search = EmpDao.get(emp);
+            if (search != null) {
+                emp.setEmpName(search.getEmpName());
+                emp.setJoinDate(search.getJoinDate());
+            } else {
+                message = "Record not found.";
+            }
+        } else if ("Update".equals(cmd)) {
+            emp.setEmpName(empName);
+            emp.setJoinDate(java.sql.Date.valueOf(joinDate));
+            if (EmpDao.update(emp)) {
+                message = "Empoyee updated successfully";
+            } else {
+                message = "Cannot update employee";
+            }
+        } else if ("Delete".equals(cmd)) {
+            if (EmpDao.delete(emp)) {
+                message = "Empoyee deleted successfully";
+            } else {
+                message = "Cannot delete employee";
+            }
+        }
+
+        //Push list of Emp into request scope
+        request.setAttribute("emps", EmpDao.gets());
+        request.setAttribute("emp", emp);
+        request.setAttribute("message", message);
+        request.getRequestDispatcher("/emp.jsp")
+                .forward(request, response);
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        //Push list of Emp into request scope
+        request.setAttribute("emps", EmpDao.gets());
+        request.setAttribute("emp", new Emp());
+        request.getRequestDispatcher("/emp.jsp")
+                .forward(request, response);
+    }
+}
+
+6. emp.jsp
+---------------------
+<% String title = "Manage Emp";%>
+<%@include  file="templates/header.jspf" %>
+<%
+    java.util.List<in.abc.model.Emp> list = (java.util.List<in.abc.model.Emp>) request.getAttribute("emps");
+    in.abc.model.Emp emp = (in.abc.model.Emp) request.getAttribute("emp");
+    String message = (String) request.getAttribute("message");
+    if (message == null) {
+        message = "";
+    }
+%>
+<div>
+    <h1>Add New Employee Record</h1>
+    <form method="post" action="emp">
+        <p><label for="empNo">Employee No</label></p>
+        <p>
+            <input type="text" name="empNo" id="empNo" value="<%=emp.getEmpNo()%>" />
+            <input type="submit" name="cmd" value="Search"/>
+        </p>  
+        <p><label for="empName">Employee Name</label></p>
+        <p><input type="text" name="empName" id="empName" value="<%=emp.getEmpName()%>"/></p>
+        <p><label for="joinDate">Join Date</label></p>
+        <p><input type="text" name="joinDate" id="joinDate" value="<%=emp.getJoinDate()%>"/></p>
+        <p><%=message%></p>
+        <p>
+            <input type="submit" name="cmd" value="Add"/>
+            <input type="submit" name="cmd" value="Update"/>
+            <input type="submit" name="cmd" value="Delete"  onclick="return confirm('Are you sure to delete a record?');" />
+        </p>
+    </form>
+</div>
+
+<table>
+    <tr>
+        <th>No</th>
+        <th>Name</th>
+        <th>Date</th>
+        <th></th>
+    </tr>
+    <%
+        for (in.abc.model.Emp em : list) {
+    %>
+    <tr>
+        <td><%=em.getEmpNo()%></td>
+        <td><%=em.getEmpName()%></td>
+        <td><%=em.getJoinDate()%></td>
+        <td>
+            <form method="post" action="emp">
+                <input type="hidden" name="empNo" value="<%=em.getEmpNo()%>"/>
+                <input type="submit" name="cmd" value="Select"/>
+            </form>
+        </td>
+    </tr>
+    <%
+        }
+    %>
+</table>        
+<%@include  file="templates/footer.jspf" %>

@@ -19,7 +19,11 @@ public class Emp {
    private java.sql.Date joinDate;
 
     public Emp() {
+     empNo=0;
+     empName="";
+     joinDate = new Date(System.currentTimeMillis());
     }
+    
 
     public Emp(Integer empNo, String empName, Date joinDate) {
         this.empNo = empNo;
