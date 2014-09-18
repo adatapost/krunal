@@ -19,6 +19,7 @@ public class U {
         try {
             return Boolean.parseBoolean(obj.toString());
         } catch (Exception e) {
+            System.err.println("toBool: " + e);
             return false;
         }
     }

@@ -70,7 +70,9 @@ public class ProductDao {
                 c.setCategoryId(U.toInt(ar[1]));
                 c.setProductName(ar[2].toString());
                 c.setUnit(ar[3].toString());
-                c.setAvailable(U.toBool(ar[4]));
+                int avail = U.toInt(ar[4]);
+                if(avail==1)
+                  c.setAvailable(true);
                 return c;
             }
         } catch (Exception ex) {
@@ -88,7 +90,9 @@ public class ProductDao {
                 c.setCategoryId(U.toInt(ar[1]));
                 c.setProductName(ar[2].toString());
                 c.setUnit(ar[3].toString());
-                c.setAvailable(U.toBool(ar[4]));
+               int avail = U.toInt(ar[4]);
+                if(avail==1)
+                  c.setAvailable(true);
                 list.add(c);
             }
         } catch (Exception ex) {

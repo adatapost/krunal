@@ -1,2 +1,18 @@
+html,body,h1,h2,h3,h4,h5,div,header,footer {
+    margin:0px;
+}
+
 .left { float:left;}
 .clear { clear:both;}
+table{
+    border-collapse: collapse;
+    border:1px solid #aaa;
+}
+td,th {
+    border:1px solid #aaa;
+    padding:4px;
+} 
+th{
+    background:black;
+    color:white;
+}

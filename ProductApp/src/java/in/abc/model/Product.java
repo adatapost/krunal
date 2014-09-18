@@ -19,6 +19,11 @@ public class Product {
    private boolean available;
 
     public Product() {
+        productId=0;
+        categoryId =0;
+        productName="";
+        unit="";
+        available=false;
     }
 
     public Product(Integer productId, Integer categoryId, String productName, String unit, boolean available) {
@@ -100,4 +105,9 @@ public class Product {
         return "Product{" + "productId=" + productId + ", categoryId=" + categoryId + ", productName=" + productName + ", unit=" + unit + ", available=" + available + '}';
     }
    
+    
+    public Category getCategory()
+    {
+        return CategoryDao.get(new Category(categoryId));
+    }
 }
