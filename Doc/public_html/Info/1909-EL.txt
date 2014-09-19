@@ -1,0 +1,90 @@
+ EL - Expression Language 
+ ==============================================================
+
+ Expression Language is part of JSP Specification and it is used
+ to read value / data from the scoped objects -  pageContext,request, session and application. Note that the EL  cannot update / modify the data of scoped object.
+
+ The power of EL lie in its coresion feature - It convert all objects to "string", all null to "empty string", all number without decimal point to long and all number with decimal to double automatically.
+
+ EL is a simple expression language which support arithmetic, relational, logical, teranary and other operators and it is used by other Java EE viewEngines and Java Server Pages Standard Tag Library (JSTL).
+
+  Syntax
+  ========
+
+    ${expr}
+
+ e.g
+
+   ${10+20} will result 30
+
+  Where "expr" must be literal (constant) or key of scoped object   and property of an object that is added into scoped object.
+
+  
+Example: Compare write method of Scriptlet with ${el-expr}.
+
+<%
+ pageContext.setAttribute("message", "Hello");
+ String message = (String) pageContext.getAttribute("message");
+ if(message !=null){
+    out.println(message.length());
+ }
+%>    
+<br/>${10}
+<br/>${10+20}
+<br/>${10>20}
+<br/>Message: ${message}
+<br/>Message: ${message.length()}  <-- Wont throws an exception
+					when message not exists.
+
+
+So EL ${expr} is the replacement of "out.println or out.print" and "<%=expr%>". So in future, we will never use scriptlets or expression tag in our JSP.
+
+In fact, we don't need Scriptlet, Expression and Declaration tag when we will learn "JSTL" along with EL.
+
+In which order, the scoped object is read by the EL?
+
+  Firstly, it looks up "pageContext" for the key and if it is   found then read it and stops. 
+  
+  If key is not exists in "pageContext" then goes to   "requestScope" and reads value if it is exists.
+
+  if key is not in "requestScope" then looks up into   "sessionScope" and reads if it is exists.
+
+  if key is not in "sessionScope" then looks up into "applicationScope" and read if it is exists.
+
+   And finally if key is not exists in all four scope then
+   returns empty string.
+
+Example: (Note: Remove/add comment and see what happens?)
+
+<%
+    int n1=10;
+    //pageContext.setAttribute("no", n1);
+    //request.setAttribute("no", 100);
+    //session.setAttribute("no", 1000);
+    application.setAttribute("no", 10000);
+%>    
+${no} 
+
+
+  EL Implicit objects
+  ----------------------------------------------------------
+
+   Four scoped objects in EL are referenced via : pageScope, requestScope, sessionScope and applicationScope.
+
+Example:
+
+<%
+    int n1=10;
+    pageContext.setAttribute("no", n1);
+    request.setAttribute("no", 100);
+    session.setAttribute("no", 1000);
+    application.setAttribute("no", 10000);
+%>    
+<br/> - Page but not obvious - ${no} 
+<br/> - Page - ${pageScope.no} 
+<br/> - Request - ${requestScope.no} 
+<br/> - Session - ${sessionScope.no} 
+<br/> - Application - ${applicationScope.no} 
+
+
+
