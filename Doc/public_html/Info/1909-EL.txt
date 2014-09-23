@@ -87,4 +87,140 @@ Example:
 <br/> - Application - ${applicationScope.no} 
 
 
+Read "object" properties (getters) and arrays
+------------------------------------------------
 
+ object properties:
+
+    ${expr.prop1}   Or   ${expr["prop1"]}
+
+ array element
+   
+    ${expr[0]}
+
+Example:
+<%
+ pageContext.setAttribute("now", new java.util.Date());
+ 
+ //Define product class with id and name property
+ pageContext.setAttribute("product", 
+             new in.abc.model.Product(10,"Pencil"));
+ pageContext.setAttribute("cities", 
+             new String[] {"Meh","Pat","Raj"});
+%>    
+ 
+<br/>${now}
+<br/>${now.date}
+<br/>${now["date"]}
+<br/>${now.minutes}
+<br/>${product.id}
+<br/>${product.name}
+<br/>${product["name"]}
+<br/>${product}
+<br/>Array
+<br/>${cities[0]} 
+<br/>${cities[1]} 
+
+
+EL Java style and EL style operators
+-------------------------------------------
+Arithmetic operators
+-----
+<br/>${10 + 20} 
+<br/>${10 - 20} 
+<br/>${10 * 20} 
+<br/>${10 / 20} 
+<br/>${10 % 20} 
+<br/>${10 div 20} 
+<br/>${10 mod 20} 
+
+Relational operators
+--------
+<br/>${10 == 20} Or ${10 eq 20}
+<br/>${10 != 20} Or ${10 ne 20}
+<br/>${10 > 20} Or ${10 gt 20}
+<br/>${10 < 20} Or ${10 lt 20}
+<br/>${10 >= 20} Or ${10 ge 20}
+<br/>${10 <= 20} Or ${10 le 20}
+
+Logical operators
+------------
+
+<br/>${! true} Or ${not true}
+<br/>${empty student}  
+<br/>${not empty student}  
+
+<br/>${3>2 && 3<8} or ${3>2 and 3<8}  
+<br/>${3>2 || 3<8} or ${3>2 or 3<8}  
+
+Teranary operator
+------------
+<br/>${empty student ? "Student not found" : "Found"}
+
+Object member operator
+----------------
+<br/>${obj.propName}  or ${obj["propName"]
+
+Array subscript operator
+------------------
+<br/>${array[0]}
+
+Example: Create HomeServlet which redirect the public pages like - Home, About us, Contact us etc.
+
+1. Write doGet method
+
+   String action = request.getParameter("action");
+   String fileName = "/home.jsp";
+   if("About".equals(action)) fileName = "/about.jsp";
+   if("Contact".equals(action)) fileName = "/contact.jsp";
+   request.getRequestDispatcher(fileName)
+          .forward(request,response);
+
+2. pages at root of web app
+   
+   index.jsp
+   about.jsp
+   home.jsp
+   contact.jsp
+
+
+ Request the /public (url of HomeServlet):
+
+             public?action=About
+             public?action=Contact
+  
+  Or add hyperlinks:
+
+   <a href="public">Home</a>
+   <a href="public?action=About">About us</a>
+
+
+You can bind objects to scoped object in above example:
+
+  code in doGet method to send data to the pages:
+
+    ...
+     String title= "Home";
+     if ("About".equals(action)) {
+            fileName = "/about.jsp";
+            title="About us";
+      }
+     if ("Contact".equals(action)) {
+        fileName = "/contact.jsp";
+        title = "Contact us";
+        request.setAttribute("address", "23-ABC Apt - Mumbai");
+     }
+     request.setAttribute("title", title);
+     ...
+
+home.jsp
+--------
+<title>${title}</title>
+
+<h1>${title}</title>
+
+contact.jsp
+------------
+<title>${title}</title>
+<h1>${title}</h1>
+<address>${address}</address>
