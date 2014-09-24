@@ -1,0 +1,33 @@
+html,body,h1,h2,h3,h4,h5,div,header,footer {
+    margin:0px;
+}
+.left{float:left;}
+.clear{clear:both;}
+table{
+    border:collapse;
+    border:1px solid #aaa;
+    
+}
+th{
+    border:1px solid #aaa;
+    paddind:4px;
+}
+th{
+    background: 1ea;
+    color:white;
+}
+body{
+    background: #aae;
+}
+h3{
+    color: red;
+}
+h1{
+    text-align: center;
+    text-shadow:7px 7px 7px #777;
+
+    color:#d24;
+}
+a{
+    color:#111;
+}

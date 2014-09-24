@@ -1,0 +1,182 @@
+ JSP Actions
+ ------------------------------------------------------------
+
+ JSP actions are special purpose <tags> and classes to perform
+ actions inside the JSP pages.
+
+ 1. <jsp:useBean>  - To creates an object of class
+
+ 2. <jsp:setProperty> - To set property (call setter) of an 			object.
+
+ 3. <jsp:getProperty> - To get value from property (call getter).
+
+
+Syntax:
+
+ <jsp:useBean     id="obj_ref_var"
+               scope="page|request|session|application"
+               class="package.ClassName"/>
+
+    will creates an object just like we use Java code:
+
+             ClassName obj_ref_var = new ClassName();
+
+ To set properties:
+
+   <jsp:setProperty name="obj_ref_var" 
+                property="propName"
+                   value="value"/>
+
+ To get properties:
+
+    <jsp:getProperty name="obj_ref_Var" property="propName"/>
+  Or use EL  ${obj_ref_var.propName}
+
+Example:
+
+<jsp:useBean id="now" scope="page" class="java.util.Date"/>
+
+<br/>Day: <jsp:getProperty name="now" property="date"/>
+<br/>Hours <jsp:getProperty name="now" property="hours"/>
+<br/>EL : ${now.date}
+
+<jsp:setProperty name="now" property="date" value="10"/>
+<br/>EL : ${now.date}
+
+<jsp:useBean id="p1" scope="page" class="in.abc.model.Product"/>
+<jsp:setProperty name="p1" value="10" property="id"/>
+<jsp:setProperty name="p1" value="Pen" property="name"/>
+<br/>${p1.id} ${p1.name}
+
+Working with <form>
+============================================================
+
+ In EL we have "param" object which store form parameter key- value pairs and we may access within the page.
+
+ Example:
+
+  <br/>${param.id}
+  <br/>${param.name}
+
+   <form method="post"> <!-- current page will be requested -->
+     <br/>ID:   <input type="text" name="id"/>
+     <br/>NAme:  <input type="text" name="name"/>
+     <input type="submit"/>
+   </form>
+
+
+ With <jsp:useBean> we can receive form input into an object  (bean). But be sure about the <form> field names and property names of Java class -- They must match.
+
+ Example: create Product class with "id" and "name" field           (include getter/setter/constructor etc).
+
+ <jsp:useBean id="p1" scope="page" class="in.abc.model.Product">
+    <jsp:setProperty name="p1" property="*"/>
+ </jsp:useBean>
+
+   <form method="post"> 
+     <br/>ID:   <input type="text" name="id" value="${p1.id}/>
+  <br/>NAme:  <input type="text" name="name" value="${p1.name}/>
+     <input type="submit"/>
+   </form>
+  
+ <br/>${p1.id}  ${p1.name}
+
+
+ 2. <jsp:include page="relative-url"/>  - To request the servlet
+	or page located inside the application and insert the 
+        response (output) into current page.
+
+Example:
+
+<h1>Current Page</h1>
+<jsp:include page="example1.jsp"/>
+<jsp:include page="example2.jsp"/>
+<h1>Current Page</h1>
+
+     You can pass data to the requested resource via <jsp:param/>
+     --------------------------------------------------------
+
+     example5.jsp
+     --------------
+     <jsp:include page="emp-page.jsp">
+         <jsp:param name="id" value="10"/>
+         <jsp:param name="name" value="Rajesh"/>
+     </jsp:include>
+
+     emp-page.jsp
+     ------------- 
+     <p>Hello! my name is ${param.name} and ${param.id} is my 
+        ID.</p>
+   
+
+Example : DataServlet produce data and consumed by the JSPs and other Servlets.
+
+DataServlet
+=============
+@WebServlet(name = "DataServlet", urlPatterns = {"/data", "/action/data"})
+public class DataServlet extends HttpServlet {
+    protected void executeIt(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String action = request.getParameter("action");
+        
+        if("categories".equals(action)){
+            try(Db x=new Db("select * from category")){
+                request.setAttribute(action, x.rows());
+            }catch(Exception ex){
+                System.err.println(ex);
+            }
+        }
+         if("category".equals(action)){
+            try(Db x=new Db("select * from category where category_id=?")){
+                String categoryId = request.getParameter("categoryId");
+                
+                x.getSt().setInt(1, U.toint(categoryId));
+               request.setAttribute(action, x.row());
+                
+            }catch(Exception ex){
+                System.err.println(ex);
+            }
+        }
+        if("products".equals(action)){
+            try(Db x=new Db("select * from product")){
+                request.setAttribute(action, x.rows());
+            }catch(Exception ex){
+                System.err.println(ex);
+            }
+        }
+    }
+
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        executeIt(request, response);
+    }
+
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        executeIt(request, response);
+    }
+
+    
+
+}
+
+example.jsp
+=================
+<jsp:include page="data">
+    <jsp:param name="action" value="categories"/>
+</jsp:include>
+<jsp:include page="data">
+    <jsp:param name="action" value="products"/>
+</jsp:include>
+<jsp:include page="data">
+    <jsp:param name="action" value="category"/>
+    <jsp:param name="categoryId" value="3"/>
+</jsp:include>
+${categories}
+${products}
+${category[0]} ${category[1]}
