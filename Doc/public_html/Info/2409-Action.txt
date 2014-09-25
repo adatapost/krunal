@@ -180,3 +180,24 @@ example.jsp
 ${categories}
 ${products}
 ${category[0]} ${category[1]}
+
+
+
+<jsp:forward page="url">
+  <jsp:param name="name" value="value"/>
+  ..
+</jsp:forward>
+
+   To tranfer the control (url) from existing url to new url    along with data.
+
+Example:
+
+page1.jsp
+----------
+<jsp:forward page="page2.jsp">
+   <jsp:param name="no" value="10"/>
+</jsp:forward>
+
+page2.jsp
+----------
+<h2>${param.no}</h2>

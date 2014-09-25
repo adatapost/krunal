@@ -1,0 +1,133 @@
+ Java Server Pages Standard Tag Library - JSTL
+ -----------------------------------------------
+
+  JSTL is part of JSP Specification that add programming   constructs like - loop, conditional statements, try-catch,
+  and methods to create, update and remove "scoped" objects.
+
+  In fact JSTL sits top on the EL and uses EL expressions.
+
+  If you use EL & JSTL then you do not have to use the JSP   scriplet (<% %>), expression (<%=expr%>) or declarators.
+
+  JSTL is a tag library and we must have to add the JSTL.jar and
+  standard.jar archive files into our projects.
+
+  With netbeans you can add via "Add Library" menu item.
+
+
+  JSTL tag library is made up of three category of "tags":
+ 
+     1. core tags
+     2. formatting tags and
+     3. sql tags
+
+  In order to use JSTL into JSP pages, we must have to 
+  register them with <%@taglib %> directive.
+
+  We will use following 'prefix' and 'uri' - however you can
+  set your own prefix.
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+
+ The Core Tags
+ ------------------------------
+ 1. <c:set var="varName" 
+           scope="page|request|session|application" 
+           value="value"/>
+
+    To create entry into scoped object. Default is "page".
+
+ 2. <c:out value="${el-expr} or literal" 
+           escaleXml="true | false" scope="..."/>
+
+    To write data from given expression and also escape that     string.
+
+ 3. <c:remove var="varName" scope="..."/> - Remove an entry
+
+Example:
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+
+<c:set var="no" scope="page" value="10"/>
+<c:set var="info" scope="request" value="<h1>Hello World</h1>"/>
+<c:set var="data" scope="request" 
+       value="<script>alert('Hello');</script>"/>
+
+<br/>EL ${no} ${info} ${data}
+
+<br/>JSTL 
+<br/><c:out value="${no}"/>
+<br/><c:out value="${info}"/>
+<br/><c:out value="${data}"/>
+<br/><c:out value="${info}" escapeXml="false"/>
+
+<c:remove var="no"/>
+<c:remove var="info" scope="request"/>
+
+<br/>After Removing = <c:out value="${no}"/>
+
+<c:if> - conditional statement
+ -------------------------------------
+  <c:if test="${el-expr-with-boolean-and-relational-operator}">
+     .....
+  </c:if>
+
+Example:
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:if test="${not empty param.name}">
+    <jsp:useBean id="now" class="java.util.Date"/>
+    <h3>Welcome ${param.name}</h3>
+    <fmt:formatDate value="${now}" pattern="dd-MM-yyyy"/>
+</c:if>
+
+<c:if test="${empty param.name}">
+    <form method="post">
+        Enter your name : <input type="text" name="name" />
+        <input type="submit"/>
+    </form>
+</c:if>
+
+
+ <c:choose> ... <c:when> ... </c:choose>
+ ---------------------------------------------------
+ If..else..if statement
+
+ <c:choose>
+   <c:when test="${expr}">
+       statements...
+   </c:when>
+   <c:when test="${expr}">
+       statements...
+   </c:when>
+   <c:otherwise>
+       statements..
+   </c:otherwise>
+ </c:choose>
+
+Example:
+
+<c:if test="${not empty param.no}">
+    <c:choose>
+        <c:when test="${param.no == 1}">
+            <h4>Jan</h4>
+        </c:when>
+        <c:when test="${param.no eq 2}">
+            <h4>Feb</h4>
+        </c:when>
+        <c:when test="${param.no gt 2 and param.no le 12}">
+            <h4>Mar....Dec</h4>
+        </c:when>
+        <c:otherwise>
+            <h4>Invalid month number</h4>
+        </c:otherwise>
+    </c:choose>
+</c:if>
+
+<c:if test="${empty param.no}">
+    <form method="post">
+        Enter month no : <input type="text" name="no" />
+        <input type="submit"/>
+    </form>
+</c:if>
