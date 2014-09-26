@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package in.abc.servlets;
 
 import in.abc.U;
 import in.abc.model.Category;
 import in.abc.model.CategoryDao;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,57 +28,54 @@ public class CategoryServlet extends HttpServlet {
         String message = "";
         String categoryId = U.get("categoryId", req); //req.getParameter("categoryId");
         String categoryName = req.getParameter("categoryName");
-        String cmd  = req.getParameter("cmd");
-        
-        if("Add".equals(cmd)){
+        String cmd = req.getParameter("cmd");
+
+        if ("Add".equals(cmd)) {
             cat.setCategoryId(U.toInt(categoryId));
             cat.setCategoryName(categoryName);
-            if(CategoryDao.add(cat)){
+            if (CategoryDao.add(cat)) {
                 message = "Category added";
-            }else{
+            } else {
                 message = "Category not added";
             }
-        } 
-        else if("Search".equals(cmd) 
+        } else if ("Search".equals(cmd)
                 || "Edit".equals(cmd)) {
-             cat.setCategoryId(U.toInt(categoryId));
-             Category search = CategoryDao.get(cat);
-             if(search!=null){
-                 cat.setCategoryName(search.getCategoryName());
-             }else{
-                 message = "Not found";
-             }
-        }
-        else if("Update".equals(cmd)){
+            cat.setCategoryId(U.toInt(categoryId));
+            Category search = CategoryDao.get(cat);
+            if (search != null) {
+                cat.setCategoryName(search.getCategoryName());
+            } else {
+                message = "Not found";
+            }
+        } else if ("Update".equals(cmd)) {
             cat.setCategoryId(U.toInt(categoryId));
             cat.setCategoryName(categoryName);
-            if(CategoryDao.update(cat)){
+            if (CategoryDao.update(cat)) {
                 message = "Category updated";
-            }else{
+            } else {
                 message = "Category not updated";
             }
-        }
-        else if("Delete".equals(cmd)){
-             cat.setCategoryId(U.toInt(categoryId));
-            
-            if(CategoryDao.delete(cat)){
+        } else if ("Delete".equals(cmd)) {
+            cat.setCategoryId(U.toInt(categoryId));
+
+            if (CategoryDao.delete(cat)) {
                 message = "Category deleted";
-            }else{
+            } else {
                 message = "Category not deleted";
             }
         }
-          
-        req.setAttribute("categories",CategoryDao.gets());
+
+        req.setAttribute("categories", CategoryDao.gets());
         req.setAttribute("category", cat);
         req.setAttribute("message", message);
-        req.getRequestDispatcher("/category.jsp").forward(req,resp);
+        req.getRequestDispatcher("/category.jsp").forward(req, resp);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
-        req.setAttribute("categories",CategoryDao.gets());
+
+        req.setAttribute("categories", CategoryDao.gets());
         req.setAttribute("category", new Category());
-        req.getRequestDispatcher("/category.jsp").forward(req,resp);
+        req.getRequestDispatcher("/category.jsp").forward(req, resp);
     }
 }

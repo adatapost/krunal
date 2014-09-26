@@ -131,3 +131,139 @@ Example:
         <input type="submit"/>
     </form>
 </c:if>
+
+
+<c:forEach> -- simple counter loop
+ ----------------------------------
+Example:
+
+<select>
+<c:forEach var="no" begin="1" end="10" step="2">
+    <option>${no}</option>
+</c:forEach>
+</select>  
+  
+
+<c:forEach> -- Array or collection loop
+
+---------------------------------------
+
+ Syntax:
+
+    <c:forEach var="item" 
+        items="comma-separated-items | collection">
+
+     </c:forEach>
+
+  You can also uses "begin", "end" and "step" with collection   iterator.
+
+Example:
+
+<select>
+ <c:forEach var="month" items="Jan,Feb,Mar">
+   <option>${month}</option>
+ </c:forEach>
+</select>
+
+Example: List data from the given table.
+
+ 1. Create DataServlet and write following code in doGet method.
+
+    String action = request.getParameter("action");
+    if("categories".equals(action)) {
+       try(Db x=new Db("select * from category")) {
+           request.setAttribute("categories",x.rows());
+        }catch(Exception ex) { }
+     }
+ 2. code in your JSP.
+
+    <jsp:include page="data">
+      <jsp:param name="action" value="categories"/>
+    </jsp:include>
+
+    <c:forEach var="cat" items="${categories}">
+       <br/>${cat[0]}  ${cat[1]}
+    </c:forEach>
+
+
+<c:catch> -- Catch the exception.
+
+Example:
+
+<c:set var="no" value="10"/>
+<c:catch var="ex">
+    <c:set var="no" value="${no * 3}"/>
+</c:catch>
+
+<c:choose>
+    <c:when test="${empty ex}">
+        Result : ${no}
+    </c:when>
+    <c:otherwise>
+        ${ex}
+    </c:otherwise>
+</c:choose>
+
+<c:forTokens> -- Delimeter based parsing of string
+---------------------------------------------------
+<c:forTokens items="10|20|30,40|50" delims=",|" var="no">
+    <br/>${no}
+</c:forTokens>
+
+<c:set var="emails" value="a@a.com;b@b.com;c@c.com"/>
+
+<c:forTokens items="${emails}" delims=";" var="email">
+    <br/>${email}
+</c:forTokens> 
+
+
+<c:redirect> -- Request internal or external web-resource.
+-----------------------------------------------------------
+
+ In servlet, we will use "response.sendRedirect(url)" method.
+
+Example:
+
+<c:choose>
+    <c:when test="${param.action eq 'google'}">
+        <c:redirect url="http://www.google.com"/>
+    </c:when>
+    <c:when test="${param.action eq 'facebook'}">
+        <c:redirect url="http://www.facebook.com"/>
+    </c:when>
+     <c:when test="${param.action eq 'home'}">
+        <c:redirect url="example1.jsp"/>
+    </c:when>
+</c:choose>    
+
+<a href="?action=google">Google</a>
+<a href="?action=facebook">Facebook</a>
+<a href="?action=home">Home</a>
+   
+
+<c:import url="url" var="data"> - To request external or internal resource and store its response into the variable.
+----------------------------------------
+<c:choose>
+    <c:when test="${param.action eq 'google'}">
+        <c:import url="http://www.google.com" var="data"/>
+    </c:when>
+    <c:when test="${param.action eq 'facebook'}">
+        <c:import url="http://www.facebook.com" var="data"/>
+    </c:when>
+     <c:when test="${param.action eq 'home'}">
+         <c:import url="example1.jsp" var="data"/>
+    </c:when>
+</c:choose>    
+
+<a href="?action=google">Google</a>
+<a href="?action=facebook">Facebook</a>
+<a href="?action=home">Home</a>
+<hr/>
+${data}
+
+
+<c:url> -- It re-write the url. It is mainly used when an application uses session mechanism to track the user's activities.
+
+  It appends "session-id" to the "url" if web-browser's cookie     setting is disabled.
+
+
