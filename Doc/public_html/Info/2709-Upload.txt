@@ -1,0 +1,147 @@
+ Upload the documents or files
+ --------------------------------------------------------------
+
+  In order to upload a file (of any type or size), we must have
+  to create <form> with "enctype='multipart/form-data'" attribute
+  and use the <input type='file'/> element.
+
+  In servlet (server side), we have to receive "uploaded file"   using "request.getPart()" method.
+
+
+
+  The <form method="post"
+            action="url"
+            enctype="multipart/form-data">
+         ....
+         <input type="file" name="file"/>
+      </form>
+
+     element must have POST request method and enctype (encoded-     type for sending data).
+
+     enctype = "multipart/form-data" tells the server that the
+     data is in binary (array of bytes) from client and it has 
+     to use "streams" to read them.
+                 
+
+  Obtain the reference of ServletContext object 
+  ---------------------------------------------
+   In JSP we can referece ServletContext object via "application"
+   implicit object reference but in Servlet we must have to call
+   request.getServletContext() method to have "application"        object reference.  
+
+   Some of the important methods of ServletContext are:
+
+     1. getRealPath(virtual-or-relative-path);
+
+        It returns physical or real path of file or directory.
+
+    e.g   String vPath = "/files/sample.jpg";
+          String rPath = request.getServletContext()
+                                .getRealPath(vPath);
+
+     2.  getMimeType("file-with-extension")  
+
+        It returns mime or content type of given file.ext.
+
+      e.g
+
+      String contentType = request.getServletContext()
+                                  .getMimeType("file.pdf");
+     Or use application obj in JSP:
+         <%
+         out.println(application.getMimeType("file.jpg"));
+         %>
+
+    3. getContextPath() - Returns / (root) of the application.
+
+
+ In UploadServlet, we must have to add @MultipartConfig()  annotation to the servlet definition. That way you can
+ manage the multipart behavior -- size of request (length) and
+ maximum upload data etc.
+
+
+Example:
+
+file-upload.jsp
+------------------
+<form method="post"
+      action="upload"
+      enctype="multipart/form-data">
+  <input type="file" name="file"/>
+  <input type="submit"/>
+</form>
+
+UploadServlet (url="/upload")
+---------------
+
+@WebServlet(urlPatterns = {"/upload"})
+@MultipartConfig()
+public class UploadServlet extends HttpServlet {
+
+    code in doGet:
+        request.getRequestDispatcher("/index.jsp")
+               .forward(request, response);
+  
+
+    code in doPost:
+        Part part = request.getPart("file");
+        if (part != null) {
+            System.out.println(part.getContentType());
+            System.out.println(part.getSize());
+            System.out.println(part.getSubmittedFileName());
+            part.write(request.getServletContext()
+                    .getRealPath("/files/" 
+                          + part.getSubmittedFileName()));
+        }
+
+        request.getRequestDispatcher("/index.jsp")
+               .forward(request, response);
+     
+ 
+
+Example: Add size and file type (MIME type) restriction.
+
+.....
+ String ct = part.getContentType();
+ long size = part.getSize();
+ if(ct.equals("image/jpeg") 
+      || ct.equals("image/gif")
+           || ct.equals("image/png")) {
+    if(size>=1 && size<=1024  * 2) { //  2 KB
+
+       
+       part.write("C:\\javaprg\\89\\UploadFileApp
+              \\web\\files\\" + part.getSubmittedFileName());
+       message = "Image file uploaded successfully.";
+     }else {
+        message = "File length must be below 2 KB";
+     }
+  } else {
+    message = "Please select image file - .jpg, .gif or .png";
+  }  
+ 
+
+Example: Program to store empno, name and photo.
+
+ Hint: Store .png or .jpg or .gif under the /photo folder and
+       save file name into "photo" field.
+
+create table Emp
+(
+   emp_no number(4) primary key,
+   emp_name varchar2(50),
+   photo varchar(60)
+)
+
+  String empNo = request.getParameter("empNo");
+  String empName = request.getParameter("empName");
+  ....
+  ...
+  if(size>=1 ........ ) {
+    
+     emp.setEmpNo(empNo);
+     emp.setEmpName(empName);
+     emp.setPhoto(part.getSubmittedFileName());
+    //code to insert record into "emp" table
+    part.write(...);
+  }
