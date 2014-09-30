@@ -1,0 +1,141 @@
+ Filter
+ =============================================================
+
+ The "Filter" is a "servlet" alike component (class) that is
+ used to intercept requests and responses. The role of servlet
+ is different then "filter" - Servlet is mainly used to receive
+ client request, process it and dispatch the view or data.
+
+ The "Filter" sits between web-server and any-resource located
+ at application server.
+
+ e.g
+
+ Web-Browser --->Requests--->  Web Server
+                                 |  ^
+                                 V  |
+                                Filter-1
+                                 |  ^
+                                 V  |
+                                Filter-2
+                                  ....
+                                  ....
+                                  |  |
+                                  V  |
+                                 JSP, Servlet, static resource
+                                 etc.
+
+ so the "Filter" will be used for the following purposes:
+
+  1. Login - Authentication & Authorization
+  2. Compress the stream
+  3. Filter the text, or content
+  4. Generate Images and data - XML or JSON
+  5. Download the content / files etc
+  6. Encryption & decryption 
+  7. Developing frameworks - Spring, Struts, JSF are example of
+     frameworks.
+
+  
+ In servlet we have single "url" resource and it targets the   
+ servlet's doGet or doPost method where as in "Filter" we have a  single method which receives a request and response.
+
+ Filter can be configured for one or more resource using url- pattern whereas in Servlet we map it for single resource.
+
+
+How to create a "Filter"?
+-------------------------------------------------------------
+ Create a public class and implements javax.servlet.Filter  interface.
+
+ Set @WebFilter() annotation along with urlPattern. Filter url- pattenrs are "generic" .eg /* (all resournces)
+                            /admin/*.html  (only .html resources
+					   under /admin url.)
+
+Example: create /* (applies to all) filter.
+
+@WebFilter(filterName = "FirstFilter", urlPatterns = {"/*"})
+public class FirstFilter implements Filter {
+
+    /* This method will be executed when an object of        "FirstFilter" is created by the container. 
+    */
+    @Override
+    public void init(FilterConfig filterConfig)
+               throws ServletException {
+    }
+    /* This method will be called on each request and response        for  /* url (any resource).
+
+       To forward the request/response, call the 
+         chain.doFilter(request,response) method of 
+         javax.servlet.FilterChain.
+    */
+   
+    */
+    @Override
+    public void doFilter(ServletRequest request, 
+                        ServletResponse response, 
+                         FilterChain chain) 
+                    throws IOException, ServletException {
+
+   //Wrap the request and response objects using Http specific
+   //request/response types -- javax.servlet.http.*
+
+   HttpServletRequest req = (HttpServletRequest) request;
+   HttpServletResponse res = (HttpServletResponse) response;
+  
+   res.getWriter().println("<h1>Hello World - Filter </h1>");
+   //Carry the request to next filter or resource
+   chain.doFilter(request, response);
+   res.getWriter().println("<h1>Bye - Filter </h1>");
+  }
+
+  /* This method will be called when a filter object is
+     released from the pool.
+  */
+    @Override
+    public void destroy() {
+    }
+}
+
+
+Example: Image filter /image
+
+@WebFilter(filterName = "ImageFilter", urlPatterns = {"/image"})
+public class ImageFilter implements Filter {
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
+        String text = request.getParameter("text");
+        if (text == null) {
+            text = "";
+        }
+        BufferedImage bufferImage = new BufferedImage(100, 40, BufferedImage.TYPE_INT_RGB);
+        Graphics g = bufferImage.getGraphics();
+        g.setColor(Color.red);
+        g.fillRect(0, 0, 100, 40);
+        g.setColor(Color.white);
+        g.setFont(new Font("Arial", Font.BOLD, 15));
+        g.drawString(text, 25, 25);
+
+        response.setContentType("image/png");
+        ImageIO.write(bufferImage, "png", response.getOutputStream());
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+}
+
+Usage:
+
+       <img src="image?text=Home"/>
+        <img src="image?text=About us"/>
+        <img src="image?text=Contact us"/>
+
