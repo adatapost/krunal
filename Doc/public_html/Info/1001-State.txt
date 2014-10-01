@@ -1,0 +1,142 @@
+ State Management
+ -------------------------------------------------------------
+
+ HTTP is a stateless protocol. It means data are not saved or  preserved either client or server application by default and
+ that is the reason that we must have to use "page", "request",
+ "session" and "application" scoped objects.
+
+ The "page","request","session" and "application" scoped objects
+ allow us to store key-value pairs on different scopes into the
+ "server-memory (Heap)".
+
+ There is another state mechanism for the client app is "cookie".
+ Cookie is also an object but it is managed / controlled by the
+ web-browsers. The cookie object will be created, updated and
+ deleted by the web-browser. The cookie object save key-value  data, path to save cookies, expire datetime etc.
+
+ Session Vs Cookie
+ -----------------
+
+ 1. Session uses server-memory and it will be created when
+    any of the resource of webapp is requested first time and
+    remains into memory till web-browser is not closed.
+
+ 2. Session can store objects of any type.
+
+ 3. Cookie is created or managed by the web-browser but we will
+    instruct the web-browser via Java code and HTTP headers.
+
+    Cookies are created into web-browser's heap (temporary    cookie), which are released automatically when we close the 
+    web-browsers.
+
+    Cookies are also stored into disk-file (persistent cookie),
+    which are released automatically when specified "expire     datetime value exceed".
+4.  Cookie can store "string" data.
+
+Both, cookies and session have "user or session" scope. So each user (web-browser) has its own "cookies" and "session". In fact
+the session uses "cookie" to track the session [ to identify the
+apropriate client].
+
+ 
+Example: Add (or bound objects to session),
+         remove (or unbound objects from session) and
+         display session data.
+
+add-session.jsp
+-----------------
+<%
+ session.setAttribute("no",10);
+ session.setAttribute("name","Raj");
+%>
+<a href="add-session.jsp">Add Data</a>
+<a href="show-session.jsp">Show Data</a>
+<a href="delete-session.jsp">Delete Data</a>
+
+show-session.jsp
+-----------------
+${no}
+<br/>${name}
+<a href="add-session.jsp">Add Data</a>
+<a href="show-session.jsp">Show Data</a>
+<a href="delete-session.jsp">Delete Data</a>
+
+delete-session.jsp
+--------------------
+<%
+ session.removeAttribute("no");
+ session.removeAttribute("name");
+%>
+<a href="add-session.jsp">Add Data</a>
+<a href="show-session.jsp">Show Data</a>
+<a href="delete-session.jsp">Delete Data</a>
+        
+ 
+Open two or more web-browsers (users) and test above resources. Each user has its own copy of "session" object at server side and
+application server returns "sessionid" value (unique identifier for user) via "cookie" so user's (web-browser) next request to the application carries same "sessionid".
+
+But what will happens when user's (webbrowser) cookie settings are disabled? In this case session tacking will be broken down and application server will create new session on each request.
+
+
+To track the user even after a cookie is disabled, we must have to append "jsessionid=xsd23232323232332323" to each url we request the app.
+
+ We will use resopnse.encodeRedirectURL("url") in servlet code or
+ <c:url value="url"/> in JSP. This method automatically append "jsessionid" to our urls if cookie is disabled.
+
+Example: Disabled the "cookie" and navigate above pages and also add following correction.
+
+add-session.jsp
+---------------
+<%
+ ....
+ out.println(session.getId()); // Display the session ID
+%>
+<br/>
+<a 
+ href="<%=response.encodeRedirectURL("add-session.jsp")%>">Add                                                        Data</a>
+<a href="<c:url value='delete-session.jsp'/>">Delete Data</a>
+<a href="<c:url value='show-session.jsp'/>">Show Data</a>
+
+And write hyperlinks in show-session.jsp and delete-session.jsp using <c:url/> or <%=response.encodeRedirectURL("url")%>.
+
+1. add-session.jsp
+--------------------
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+  session.setAttribute("no",10) ;
+  session.setAttribute("name","Raj");  
+  out.println(session.getId());
+%>    
+ 
+<hr/>
+<a href="<%=response.encodeRedirectURL("add-session.jsp")%> ">Add Data</a>
+<a href='<c:url value="show-session.jsp"/>'>Show Data</a>
+<a href='<c:url value="delete-session.jsp"/>'>Delete Data</a>
+
+<form method="post" action="<c:url value="delete-session.jsp"/>">
+    <input type="submit"/>
+</form>
+
+2. show-session.jsp
+-------------------
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+${no}  
+<br/>${name}
+<% out.println(session.getId()); %> 
+<hr/>
+<a href="<%=response.encodeRedirectURL("add-session.jsp")%> ">Add Data</a>
+<a href='<c:url value="show-session.jsp"/>'>Show Data</a>
+<a href='<c:url value="delete-session.jsp"/>'>Delete Data</a>
+
+3. delete-session.jsp
+------------------------
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+  session.removeAttribute("no") ;
+  session.removeAttribute("name");  
+  
+%>
+ <% out.println(session.getId()); %>
+<hr/>
+<a href="<%=response.encodeRedirectURL("add-session.jsp")%> ">Add Data</a>
+<a href='<c:url value="show-session.jsp"/>'>Show Data</a>
+<a href='<c:url value="delete-session.jsp"/>'>Delete Data</a>
