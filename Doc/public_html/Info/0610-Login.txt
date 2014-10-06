@@ -1,0 +1,28 @@
+ Login System (Authentication and authorization)
+ ----------------------------------------------
+ Cookies and session save data at client envn and server env.  respectively.
+
+ Authentication system is a way to check the validity of username
+ and password and authorization is the system to determine  whether logged user has permission or previleges to perform  tasks or not.
+
+ In Login system, we will create "LoginFilter" which intercept
+ each request made to the application. In doFilter method we will
+ check the session or cookie key and if it is exists then
+ it will proceed the "chain", otherwise it stops it. 
+ 
+ Example: In our app, we have three types of users (Each user type is also known as "Role") -- Admin, Manager, Clerk. Our app has different task of each user and nobody can perform any task without logged in and each role has desiginated set of tasks.
+
+
+We have following app structure:
+
+/webapp/
+       |
+       |-----/admin
+                 admin pages
+       |----/manager
+       |
+       |----/clerk
+       |
+       | index.jsp
+       | login.jsp
+

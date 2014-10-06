@@ -1,0 +1,66 @@
+ Cookie
+ =============================================================
+
+ Cookie is browser mechanism to store the data along with expire
+ date/time, path, domain (host) into web-browser environment.  However we will instruct the web-browser via server-code  (whether to create or delete or update a cookie).
+
+  javax.servlet.http.Cookie class
+  -------------------------------
+
+  The object of "Cookie" consists the name, value, expire   datetime (maxAge), and path.
+  
+  There are three possible value of maxAge:
+
+     0 second to delete a cookie
+     <0 (negative) second to create a cookie into RAM and it will
+	be discarded when web-browser gets closed.
+
+     >0 seconds to save cookies into disk file -- called 	persistent cookies.
+
+Example:
+
+add-cookie.jsp
+---------------
+<%
+  Cookie c1 = new Cookie("no","10");
+  c1.setPath("/"); 
+  
+  //default setMaxAge is -1 (non-persistent cookie)
+ 
+  response.addCookie(c1); // send cookie instructions to web-			  // browser.
+%>
+<a href="add-cookie.jsp">Add</a>
+<a href="show-cookie.jsp">Show</a>
+<a href="delete-cookie.jsp">Delete</a>
+
+
+To create persistent cookie:
+
+  setMaxAge( 60 * 60 ); //1 hour
+  setMaxAge( 60 * 60 * 24 * 7 ); //7 days
+
+delete-cookie.jsp
+--------------------
+<%
+  Cookie c1=new Cookie("no","");
+  c1.setPath("/");
+  c1.setMaxAge(0);
+  response.addCookie(c1);
+%>
+...hyperlinks...
+
+show-cookie.jsp
+---------------------
+<%
+  Cookie []cookies = request.getCookies();
+  for(Cookie c: cookies) {
+    if(c.getName().equals("no")) {
+        out.println(c.getValue());
+     }
+  }
+%>
+...hyperlinks....
+
+
+
+  
