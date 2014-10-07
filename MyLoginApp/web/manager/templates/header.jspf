@@ -1,0 +1,20 @@
+<!doctype html>
+
+<html lang=en">
+    <head>
+        <title>${title}</title>
+        <base href="/MyLoginApp/manager/"/>
+    </head>
+    <body>
+        <div id="main">
+            <header>
+                <h1>My Login app - Manager</h1>
+                <h4>Welcome ${isLogin.userName}</h4>
+            </header>
+            <nav>
+                <a href="index.jsp">Home</a>
+                <a href="login">Logout</a>
+            </nav>
+            <section>
+                
+            

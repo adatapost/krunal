@@ -26,3 +26,34 @@ We have following app structure:
        | index.jsp
        | login.jsp
 
+
+1. Create table Login
+   (
+     user_name varchar(30) primary key,
+     user_pass varchar(40),
+     user_email varchar(100),
+     user_role varchar(15),
+     question varchar(50),
+     answer varchar(50)
+    )
+2. Add "Admin" user
+
+ insert into login values ('admin','admin,1234','admin@gmail.com','admin','Name of your birth place','meh');
+
+3. Create Login bean (model) class 
+
+4. Create LoginDao class
+
+5. Create Login servlet.
+
+ code in doGet:
+
+    HttpSession session = request.getSession();
+    session.removeAttribute("isLogin");
+    session.removeAttribute("userRole");
+    request.getRequestDispatcher("/login.jsp")
+           .forward(request,response);   
+
+ [Note: Add following url-pattern /login, /admin/login, /manager/login, /clerk/login]
+
+
