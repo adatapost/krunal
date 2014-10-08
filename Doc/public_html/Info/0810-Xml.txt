@@ -1,0 +1,107 @@
+ XML - eXtensible Markup Language
+ ==============================================================
+
+  What is XML? -- It is not a markup language but it is the
+                  standards (rules) to create new markup
+                  language.
+
+  What are XML standards?
+
+                -- Elements are case-sensitive
+                -- Each element must have appropriate close tag
+                -- Each document must have only and only one
+                   root element.
+                -- Elements are strictly nested.
+                -- Attribute value must be enclosed in single
+		   or double quotes.
+                -- Whitespaces are preserved.
+                -- If you wish to store data into disk file then
+		   choose .xml extension however it is not
+                   mandatory.
+
+  What is need to create new markup language? 
+
+    The main role of markup language to describe the data for
+    the applications (programs) and also people. Each computing
+    environment, progrmaming language has a software called     "PARSER" -- which correctly read/write markup data.
+
+    So XML format of data can be consumed all over the world with
+    the help of standard "PARSERS".
+
+    There are two standard parsers exists:
+
+      1. DOM - Document Object Model and
+      2. SAX - Simple API for XML
+
+    Apart from these two standards, there are some non-standard
+    ways/API exists to read/write markup.
+
+   In Java, Java API from XML Processing - JAXP API contains
+  implementation of both - standard (DOM & SAX) and non-standard.
+   
+   [NOTE: There is another standard to describe data is called           JavaScript Object Notation - JSON. Number of apps 	 (mobile) and web-services uses two standards - XML and 	         JSON]
+
+ Create the new markup language
+ -------------------------------------------------------------
+
+ Following markup language called "student" to describe student data.
+
+ <?xml version="1.0"?>  <---- It is called "pre-processor".
+                              And we are using XML 1.0 standard.
+
+ <students>             <----- This is root element
+                
+   <student className="1st">     
+                ^
+                |----------------- Attribute
+       <roll>10</roll>
+       <name>Raj</name>
+   </student>
+   <student className="2nd">
+        <roll>20</roll>
+        <name>Man</name>
+   </student>
+ </students>
+
+
+
+ The Parsers
+ =============
+
+ Parsers are software to read or write and validate markup
+ programatically.
+
+ The DOM parser reads whole markup document (root and all of its  children) at once and create an object for each element & text  and place them into the DOM-tree.
+
+ For example,
+
+ <formula>
+   <x>10</x>
+   <op>+</op>
+   <y>20</y>
+ </formula>
+ 
+
+ and DOM-tree will be:
+
+ +formula       <--- Root node or element
+        |
+        +x--+   <--- x node
+            |
+            +10 <--- text node (value)
+        +op-+ 
+            |
+            ++
+        +y--+
+            |
+            +20
+         
+   Because DOM loads all elements at once so it consumes lots of
+   memory when document is large/huge and it is the only    disadvantage of DOM.
+
+ The SAX Parser
+ ==============
+ The SAX parser read XML document serially (character by  character) and raises number of events to let us know the
+ element or character (text) boundary.
+
+ SAX parser is best suited to read / parse the huge XML  documents.
