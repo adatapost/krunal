@@ -1,0 +1,22 @@
+<!doctype html>
+
+<html lang=en">
+    <head>
+        <title>${title}</title>
+        <base href="/MyCLoginApp/admin/"/>
+    </head>
+    <body>
+        <div id="main">
+            <header>
+                <h1>My Login app - ADMIN</h1>
+                <h4>Welcome ${isLogin}</h4>
+            </header>
+            <nav>
+                <a href="index.jsp">Home</a>
+                <a href="login">Logout</a>
+                <a href="category">Category</a>
+                <a href="product">Product</a>
+            </nav>
+            <section>
+                
+            

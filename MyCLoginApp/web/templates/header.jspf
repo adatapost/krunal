@@ -1,0 +1,19 @@
+<!doctype html>
+
+<html lang=en">
+    <head>
+        <title>${title}</title>
+        
+    </head>
+    <body>
+        <div id="main">
+            <header>
+                <h1>My Login app</h1>
+            </header>
+            <nav>
+                <a href="index.jsp">Home</a>
+                <a href="login">Login</a>
+            </nav>
+            <section>
+                
+            
