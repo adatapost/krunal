@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Emps>
+<Emp>
+<ID>10</ID>
+<Name>Raj</Name>
+</Emp>
+<Emp>
+<ID>20</ID>
+<Name>Manish</Name>
+</Emp>
+</Emps>

@@ -105,3 +105,177 @@
  element or character (text) boundary.
 
  SAX parser is best suited to read / parse the huge XML  documents.
+
+
+ JAXP -- interfaces and classes
+ -------------------------------------------------------------
+
+ Packages org.w3c.dom and org.xml.sax are two standards and
+ their implementations are found in javax.xml.parsers and
+ javax.xml.transform packages.
+
+ You will find interfaces for DOM in org.w3c.dom and its  implementation is exists into javax.xml.parsers package.
+
+ How to use DOM parser API?
+ -----------------------------
+ 
+ Firstly we have to create DocumentBuilder object from  DocumentBuilderFactory and then create a new Document or read
+ the Document.
+
+ At end we must need "Transformer" object to transform  DOM/SAX/Stream to DOM/SAX/Stream.
+
+Example: 
+
+ //1. Initialize the DOM Parser
+ DocumentBuilderFactory factory = DocumentBuilderFactory
+                                    .newInstance();
+ //2. Create Document Builder object
+ DocumentBuilder builder = factory.newDocumentBuilder();
+        
+ //3. Create New Document (org.w3c.dom.Document interface)
+        
+ Document document = builder.newDocument();
+        
+ //4. Create Root Element
+        
+ Element root = document.createElement("students");
+        
+ //5. Add children
+        
+        Element student = document.createElement("student");
+        student.setAttribute("className", "1st");
+        Element roll = document.createElement("roll");
+        Element name = document.createElement("name");
+        roll.appendChild( document.createTextNode("10") );
+        name.appendChild( document.createTextNode("Raj") );
+        
+        
+        student.appendChild(roll);
+        student.appendChild(name);
+        root.appendChild(student);
+        
+ //6. Add root to the document
+ document.appendChild(root);
+        
+// 7. Transform DOM into Stream (disk file)
+ TransformerFactory tfactory = TransformerFactory.newInstance();
+ Transformer trans = tfactory.newTransformer();
+        
+ //Create DOM Source
+ DOMSource source = new DOMSource(document);
+ //Create Stream Result
+ StreamResult result = new StreamResult(
+                           new File("c:/javaprg/89/std.xml"));
+        
+ //Transform the DOM
+ trans.setOutputProperty(OutputKeys.INDENT, "yes");
+ trans.transform(source, result); //create disk file
+
+[Note: Parser throws an exception so wrap above code with        try..catch block]
+
+Example: Create "Wrapper" class to encapsulate DOM and Tranform methods.
+
+ public class Doc {
+
+    private Document doc = null;
+    private Element root = null;
+
+    public Node getRoot() { return root;}
+    public Doc(String rootName) {
+        try {
+            doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            root = doc.createElement(rootName);
+            doc.appendChild(root);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public Node create(String elementName, String value) {
+        Element ele = doc.createElement(elementName);
+        if (value != null) {
+            ele.appendChild(doc.createTextNode(value));
+        }
+        return ele;
+    }
+    public Node add(Node parent,Node child){
+        parent.appendChild(child);
+        return parent;
+    }
+
+    public void save(String fileName) {
+        try {
+            TransformerFactory tfactory = TransformerFactory.newInstance();
+            Transformer trans = tfactory.newTransformer();
+
+            //Create DOM Source
+            DOMSource source = new DOMSource(doc);
+            //Create Stream Result
+            StreamResult result = new StreamResult(new File(fileName));
+
+            //Transform the DOM
+            trans.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            trans.transform(source, result);
+        } catch (TransformerException ex) {
+            System.out.println(ex);
+        }
+    }
+
+}
+
+And use "Doc" class:
+
+        Doc x=new Doc("Emps");
+        
+        Node emp = x.create("Emp", null);
+        x.add(emp, x.create("ID", "10"));
+        x.add(emp,x.create("Name", "Raj"));
+        x.add(x.getRoot(), emp);
+        
+        emp = x.create("Emp", null);
+        x.add(emp, x.create("ID", "20"));
+        x.add(emp,x.create("Name", "Manish"));
+        x.add(x.getRoot(), emp);
+        x.save("c:/javaprg/89/emps.xml");
+
+
+Read the XML document
+=============================================================
+
+ Call the "parse" method of DocumentBuilder object to load the 
+ document.
+
+ Example:
+
+//1. Initialize the DOM Parser
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        //2. Create Document Builder object
+        DocumentBuilder builder = factory.newDocumentBuilder();
+
+        File file = new File("c:/javaprg/89/std.xml");
+
+        Document document = builder.parse(file);
+
+        //3. Obtain the "root" node
+        Element root = document.getDocumentElement();
+
+        //Retrive the children
+        NodeList list = root.getChildNodes();
+        System.out.println(list.getLength());
+        for (int i = 0; i < list.getLength(); i++) {
+            Node student = list.item(i);
+            if (student.hasAttributes()) {
+                System.out.println(((Element) student).getAttribute("className"));
+            }
+            if (student.getNodeType() == Node.ELEMENT_NODE) {
+                //List the children of student
+                NodeList list1 = student.getChildNodes();
+                for (int j = 0; j < list1.getLength(); j++) {
+                    Node node = list1.item(j);
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
+                        System.out.println(node.getNodeName() + " " + node.getTextContent());
+                    }
+                }
+            }
+        }
