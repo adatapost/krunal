@@ -3,13 +3,13 @@
 <html lang=en">
     <head>
         <title>${title}</title>
-        <base href="/MyCLoginApp/admin/"/>
+        <base href="/MyLoginApp/admin/"/>
     </head>
     <body>
         <div id="main">
             <header>
                 <h1>My Login app - ADMIN</h1>
-                <h4>Welcome ${isLogin}</h4>
+                <h4>Welcome ${isLogin.userName}</h4>
             </header>
             <nav>
                 <a href="index.jsp">Home</a>

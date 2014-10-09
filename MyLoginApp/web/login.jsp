@@ -10,9 +10,7 @@
     <p>Username</p>
     <p><input type="text" name="userName"/></p>
     <p>Password</p>
-    <p><input type="password" name="userPass"/></p>   
-    <p>Remember Me? <input type="checkbox" name="rememberMe"/></p>
-    
+    <p><input type="password" name="password"/></p>   
     <p><input type="submit" name="cmd" value="Login"/></p>
     <p>${message}</p>
 </form>

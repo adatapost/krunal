@@ -15,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -37,19 +36,11 @@ public class LoginFilter implements Filter {
          HttpServletRequest req = (HttpServletRequest) request;
          HttpServletResponse res = (HttpServletResponse) response;
          
-         Cookie cookies[] = req.getCookies();
-         String key = null, role = null;
-         for(Cookie c: cookies) {
-             if(c.getName().equals("isLogin")) {
-                 key = c.getValue();
-             }
-             if(c.getName().equals("userRole")) {
-                 role = c.getValue();
-             }
-         }
-         
+         HttpSession session = req.getSession();
+         Login key = (Login) session.getAttribute("isLogin");
+         String role = (String) session.getAttribute("userRole");
          String uri = req.getRequestURI();
-         if( key!=null && !"".equals(key) ){
+         if( key!=null ){
               if("admin".equals(role) && uri.contains("admin")) {
                   chain.doFilter(request, response);
               }
@@ -66,7 +57,7 @@ public class LoginFilter implements Filter {
                }
               
          }else {
-             res.sendRedirect("/MyCLoginApp/login.jsp");
+             res.sendRedirect("/MyLoginApp/login.jsp");
          }
          
     }
