@@ -8,8 +8,24 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 public class XmlApp {
+    
+     public static void main(String[] args) throws Exception{
+         //1. Init the SAX
+         SAXParserFactory factory = SAXParserFactory.newInstance();
+         SAXParser sax = factory.newSAXParser();
+         File file = new File("c:/javaprg/89/std.xml");
+         
+         //Create handler object
+         MyHandler handle = new MyHandler();
+         
+         sax.parse(file, handle);
+         for(Student s: handle.getList()) {
+             System.out.println(s);
+         }
+         
+     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main6(String[] args) throws Exception {
         //1. Initialize the DOM Parser
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         //2. Create Document Builder object
@@ -18,29 +34,36 @@ public class XmlApp {
         File file = new File("c:/javaprg/89/std.xml");
 
         Document document = builder.parse(file);
-
-        //3. Obtain the "root" node
         Element root = document.getDocumentElement();
-
-        //Retrive the children
-        NodeList list = root.getChildNodes();
+ 
+        //NodeList of "<name>" tag name
+        NodeList list = document.getElementsByTagName("roll");
+        
         System.out.println(list.getLength());
         for (int i = 0; i < list.getLength(); i++) {
-            Node student = list.item(i);
-            if (student.hasAttributes()) {
-                System.out.println(((Element) student).getAttribute("className"));
-            }
-            if (student.getNodeType() == Node.ELEMENT_NODE) {
-                //List the children of student
-                NodeList list1 = student.getChildNodes();
-                for (int j = 0; j < list1.getLength(); j++) {
-                    Node node = list1.item(j);
-                    if (node.getNodeType() == Node.ELEMENT_NODE) {
-                        System.out.println(node.getNodeName() + " " + node.getTextContent());
-                    }
-                }
+            Node node = list.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                 if(node.getTextContent().equals("20")) {
+                     Node parent = node.getParentNode();
+                     root.removeChild(parent);
+                 }
             }
         }
+        
+        //Write DOM to stream
+         
+        TransformerFactory tfactory = TransformerFactory.newInstance();
+        Transformer trans = tfactory.newTransformer();
+
+        //Create DOM Source
+        DOMSource source = new DOMSource(document);
+        //Create Stream Result
+        StreamResult result = new StreamResult(new File("c:/javaprg/89/std.xml"));
+
+        //Transform the DOM
+        trans.setOutputProperty(OutputKeys.INDENT, "yes");
+        trans.transform(source, result);
+        
     }
 
     public static void main2(String[] args) {

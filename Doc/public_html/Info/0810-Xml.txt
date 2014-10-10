@@ -249,33 +249,179 @@ Read the XML document
  Example:
 
 //1. Initialize the DOM Parser
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        //2. Create Document Builder object
-        DocumentBuilder builder = factory.newDocumentBuilder();
+DocumentBuilderFactory factory= DocumentBuilderFactory
+                                .newInstance();
+//2. Create Document Builder object
+DocumentBuilder builder = factory.newDocumentBuilder();
 
-        File file = new File("c:/javaprg/89/std.xml");
+File file = new File("c:/javaprg/89/std.xml");
 
-        Document document = builder.parse(file);
+//Parse method load the DOM-tree and returns Document object
 
-        //3. Obtain the "root" node
-        Element root = document.getDocumentElement();
+Document document = builder.parse(file);
 
-        //Retrive the children
-        NodeList list = root.getChildNodes();
-        System.out.println(list.getLength());
-        for (int i = 0; i < list.getLength(); i++) {
-            Node student = list.item(i);
-            if (student.hasAttributes()) {
-                System.out.println(((Element) student).getAttribute("className"));
-            }
-            if (student.getNodeType() == Node.ELEMENT_NODE) {
+//3. Obtain the "root" node
+Element root = document.getDocumentElement();
+
+//Retrive the children
+ NodeList list = root.getChildNodes();
+ System.out.println(list.getLength());
+ for (int i = 0; i < list.getLength(); i++) {
+      Node student = list.item(i);
+         if (student.hasAttributes()) {
+             System.out.println(((Element) student)
+                           .getAttribute("className"));
+           }
+          if (student.getNodeType() == Node.ELEMENT_NODE) {
                 //List the children of student
                 NodeList list1 = student.getChildNodes();
                 for (int j = 0; j < list1.getLength(); j++) {
-                    Node node = list1.item(j);
-                    if (node.getNodeType() == Node.ELEMENT_NODE) {
-                        System.out.println(node.getNodeName() + " " + node.getTextContent());
+                   Node node = list1.item(j);
+                   if (node.getNodeType() == Node.ELEMENT_NODE) {
+                        System.out.println(node.getNodeName() 
+                             + " " + node.getTextContent());
                     }
                 }
+          }
+  }
+
+Select nodeName using document.getElementsByTagName
+-----------------------------------------------------
+ ....
+ ....
+ Document document = builder.parse(file);
+ 
+  //NodeList of "<name>" tag name
+  NodeList list = document.getElementsByTagName("name");
+        
+   System.out.println(list.getLength());
+        for (int i = 0; i < list.getLength(); i++) {
+            Node name = list.item(i);
+             
+            if (name.getNodeType() == Node.ELEMENT_NODE) {
+                System.out.println(name.getTextContent());
             }
         }
+
+Search a node and then delete the parent node.
+-------------------------------------------------
+
+....
+....
+Document document = builder.parse(file);
+Element root = document.getDocumentElement();
+ 
+//NodeList of "<name>" tag name
+NodeList list = document.getElementsByTagName("roll");
+        
+
+ for (int i = 0; i < list.getLength(); i++) {
+            Node node = list.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+                 //Search the node
+                 if(node.getTextContent().equals("20")) {
+                     Node parent = node.getParentNode();
+                     root.removeChild(parent);
+                 }
+            }
+        }
+        
+  //Write DOM to stream --- Transformer
+         
+ TransformerFactory tfactory =                   TransformerFactory.newInstance();
+ Transformer trans = tfactory.newTransformer();
+
+ //Create DOM Source
+ DOMSource source = new DOMSource(document);
+ //Create Stream Result
+ StreamResult result = new StreamResult
+               (new File("c:/javaprg/89/std.xml"));
+
+ //Transform the DOM
+  trans.setOutputProperty(OutputKeys.INDENT, "yes");
+  trans.transform(source, result);
+
+
+SAX -- Event driven and sequentially reading characters
+============================================================
+To read huge XML document, we must have to use SAX.
+
+In order to use SAX, we must have to create "Handler" class by extending "DefaultHandler" class and initialize the SAX engine via SAX factory and parser classes.
+
+std.xml
+-------
+<?xml version="1.0"?>
+<students>
+ <student className="1st"> 
+   <roll>10</roll>
+   <name>Mr.A</name>
+  </student>
+  .....
+  .....
+</students>
+
+MyHandler.java
+---------------
+public class MyHandler extends DefaultHandler {
+
+    private List<Student> list = new ArrayList<Student>();
+    private Student std;
+    private String data;
+
+    @Override
+    public void characters(char[] array, int start, int length)                                             throws SAXException {
+        data = new String(array, start, length);
+    }
+
+    @Override
+    public void endElement(String uri, String localName, 
+                          String qName) throws SAXException {
+        if (qName.equals("roll")) {
+            std.setRoll(data);
+        }
+        if (qName.equals("name")) {
+            std.setName(data);
+        }
+        if (qName.equals("student")) {
+            list.add(std);
+        }
+    }
+
+    @Override
+    public void startElement(String uri, String localName, 
+       String qName, Attributes attributes) throws SAXException {
+        if (qName.equals("student")) {
+            std = new Student();
+            std.setClassName(attributes.getValue("className"));
+        }
+    }
+
+    public List<Student> getList() {
+        return list;
+    }
+}
+
+Student.java
+----------------
+public class Student {
+  private String className,roll,name;
+  .....
+}
+
+
+code in Main:
+ //1. Init the SAX
+ SAXParserFactory factory = SAXParserFactory.newInstance();
+ SAXParser sax = factory.newSAXParser();
+ 
+ File file = new File("c:/javaprg/89/std.xml");
+         
+ //Create handler object
+ MyHandler handle = new MyHandler();
+        
+ sax.parse(file, handle); // This method populate the List<T>
+
+ for(Student s: handle.getList()) {
+      System.out.println(s);
+ }
