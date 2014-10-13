@@ -1,6 +1,7 @@
 package xmlapp;
 
 import java.io.File;
+import java.net.URL;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import javax.xml.transform.*;
@@ -9,7 +10,23 @@ import javax.xml.transform.stream.StreamResult;
 
 public class XmlApp {
     
-     public static void main(String[] args) throws Exception{
+    public static void main(String []args ) throws Exception {
+        java.net.URL url = new URL("http://feeds.bbci.co.uk/news/rss.xml");
+        
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+         SAXParser sax = factory.newSAXParser();
+         
+         
+         //Create handler object
+         BccHandler handle = new BccHandler();
+         
+         sax.parse(url.openStream(), handle);
+         
+         for(BccNews s: handle.getList()) {
+             System.out.println(s);
+         }
+    }
+     public static void main10(String[] args) throws Exception{
          //1. Init the SAX
          SAXParserFactory factory = SAXParserFactory.newInstance();
          SAXParser sax = factory.newSAXParser();

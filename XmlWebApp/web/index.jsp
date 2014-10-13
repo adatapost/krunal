@@ -19,5 +19,19 @@
         <c:forEach var="s" items="${students}">
             <p>${s.roll}  ${s.name}  ${s.className}</p>
         </c:forEach>
+            
+            
+             <jsp:include page="bbc"></jsp:include>
+             <h3>BBC News</h3>
+             <c:forEach var="n" items="${news}">
+                 <h4>${n.title}</h4>
+                 <div>
+                     ${n.description}
+                 </div>
+                 <div>
+                     <small>Published Date - ${n.pubDate}</small>
+                     <a href="${n.link}">more...</a>
+                 </div>
+             </c:forEach>
     </body>
 </html>
