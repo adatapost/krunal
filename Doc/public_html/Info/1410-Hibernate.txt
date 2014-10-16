@@ -1,0 +1,246 @@
+ Java Persistent API - Hibernate
+ =============================================================
+
+  Java's POJO (Plain Object Java Object) or Model or Beans object
+  release data as soon as an application scope is done.
+
+  The JPA - Java Persistent API and its specification is a step
+  to save objects into RDBMS (database).
+
+  So Java objects are stored into database and vice-versa read
+  records from database and store them into memory -- this 
+  approach is called ORM - Object Relational Mapping.
+
+  for example,
+
+   public class Student {
+      private int roll;
+      private String name;
+      ....
+   }
+
+   is mapped to database table via Hibernate or other ORM    engines.
+
+  create table Student
+   (
+      roll number(3) primary key,
+      name varchar2(40)
+    }
+
+  Hibernate 
+  =========
+
+  Hibernate is an open source project from JBoss (Rad Hate) and
+  it is most commonly used ORM around Java SE, and EE. Note that
+  the hibernate is not bound with web only -- It is used with   different types of application.
+
+  Features of JAP (Hibernate)
+  ---------------------------
+
+  1. We need not to load JDBC Drivers or write complex code in
+     our app to insert , delete, update and select rows.
+
+  2. Hibernate Query Language is used to select or filter the
+     database result insted of SQL query however you can also use
+     SQL query too.
+  
+  3. With the help of primarykey-foreignkey relationship,      hibernate maintain object dependencies.
+
+   For example, if we have following tables:
+ 
+ create table dept  (
+     dept_no number(3) primary key,
+     dept_name varchar(40)
+ );
+ create table emp (
+     emp_no number(3) primary key,
+     dept_no number(3),
+     emp_name varchar(40),
+     foreign key (dept_no) references dept(dept_no)
+ );
+
+Then hibernate create/need following classes:
+
+ public class Dept {
+    private Integer deptNo;
+    private String deptName;
+    private Set<Emp> emps;
+    ....
+ }
+ public class Emp {
+    private Integer empNo;
+    private Stirng empName;
+    private Integer deptNo;
+    private Dept dept;
+    ...
+ }
+
+ a Dept has many Emps
+ a Emp belongs to a Dept
+
+
+Step to configure and create POJO from database
+=============================================================
+
+1. Asume that we have some tables having referencial integrity    (foreign key).
+2. Add JDBC driver in your build path.
+3. Create hibernate.cfg.xml -- In netbeans, Add New Item +    Hibernate + Hibernate configuration Wizard.
+   Set JDBC Driver connection (server, user, password)
+   
+   hibernate.cfg.xml file must be created at /src (default    package) (/WEB-INF/classes/).
+
+4. Create hibernate.reveng.xml - Reverse engineering    configuration file. This file helps hibernate tool to generate
+   POJO from database schema. This reveng file must be created       under /src folder.
+
+5. Add Hibernate Mapping Files and POJO from database -- This    tool create Hibernate Mapping XML (.hbm) file and Java class    (POJO).
+
+   1. [x] JDK 1.5 Syntax
+   2. Set package name (e.g in.abc.model)
+   3. Finish
+
+6. Add Hibernate Util class -- this class creates SessionFactory    object. It is the Hibernate engine object and it is used to
+   create org.hibernate.Session and org.hibernate.Transaction 
+   object.
+
+   The Session object has methods to write, update, delete or
+   select objects to/from the database.
+
+   Each session must be associate with a "transaction" object.
+   The transaction has two methods -- commit and rollback. If
+   database operations are successfully done then call "commit",
+   call "rollback" otherwise --- database operation fails.
+
+   We will create HbUtil.java (Util class from wizard).
+
+7. Code to insert (save an object) row.
+
+        Session session = HbUtil.getSessionFactory()
+                                .openSession();
+        Transaction trans=session.beginTransaction();
+        
+        Dept dept = new Dept();
+        dept.setDeptNo((short)20);
+        dept.setDeptName("HR");
+        
+        try {
+            session.save(dept);
+            trans.commit();
+            System.out.println("Added");
+        } catch (Exception e) {
+            trans.rollback();
+            System.out.println(e);
+        }
+
+
+
+Get rows from database 
+===========================================================
+
+session.createCriteria(TypeName).list() method returns List<T>.
+
+code:
+
+List<Dept> depts =session.createCriteria(Dept.class)
+                         .list();
+        
+for(Dept d: depts){
+   System.out.println(d.getDeptNo() + " " + d.getDeptName());
+}
+
+
+Filter the result -- add(Restrictions.xxxxx) method
+=============================================================
+
+add(Restriction obj) method takes Restrictions object - which are
+logical and relational expressions.
+
+Example:
+
+List<Dept> depts=session.createCriteria(Dept.class)
+                        .add(Restrictions.eq("deptNo",(short)10))
+                        .list();
+        
+if(!depts.isEmpty()) {
+    Dept d = depts.get(0);
+      System.out.println(d.getDeptNo() + " " + d.getDeptName());
+} else {
+    System.out.println("Not found");
+}
+
+Update/delete based upon the primary key criteria (previous example)
+---------------------------------------------
+...
+...
+if(!depts.isEmpty()){
+            Dept d = depts.get(0);
+            d.setDeptName("ABC");
+            session.update(d);
+            trans.commit();
+ } else {
+           System.out.println("Not found");
+ }
+
+To delete,
+
+ if(!depts.isEmpty()){
+            Dept d = depts.get(0);
+            session.delete(d);
+            trans.commit();
+ } else {
+           System.out.println("Not found");
+ } 
+
+Multiple criteria
+===========================
+....
+List<Dept> depts =session.createCriteria(Dept.class)
+   .add(Restrictions.eq("deptNo", (short)10))
+   .add(Restrictions.and(Restrictions.eq("deptName", "aBC")))
+   .list();
+
+....
+
+Add child record
+======================
+[Emp has Dept reference]
+
+         Emp emp=new Emp();
+         emp.setEmpNo((short)5);
+         emp.setEmpName("Romil ");
+         emp.setDept(new Dept((short)20));
+         
+         session.save(emp);
+         trans.commit();
+
+Search/update/delete
+====================
+..
+List<Emp> emps = session.createCriteria(Emp.class)
+                        .add(Restrictions.eq("empNo",(short)2))
+                        .list();
+
+if( !emps.isEmpty() ) {
+    Emp e = emps.get(0);
+    //perform update/delete etc
+}
+
+
+Fetch raw data - List<Object[]> 
+=================================
+List<Object[]> depts=session
+                  .createSQLQuery("select * from dept")
+                  .list();
+        
+for(Object []ar: depts) {
+   System.out.println(ar[0] + " " + ar[1]);
+}
+
+The createSQLQuery("SQL Statement") returns List<Object[]>.
+
+Execute SQL statement
+-------------------------
+       session.createSQLQuery("insert into dept values (?,?)")
+                 .setParameter(0, 30)
+                 .setParameter(1, "Finance")
+                 .executeUpdate();
+         trans.commit();

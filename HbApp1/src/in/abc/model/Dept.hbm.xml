@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 16, 2014 7:36:56 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="in.abc.model.Dept" table="DEPT" schema="RIKIN">
+        <id name="deptNo" type="short">
+            <column name="DEPT_NO" precision="3" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="deptName" type="string">
+            <column name="DEPT_NAME" length="40" />
+        </property>
+        <set name="emps" table="EMP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="DEPT_NO" precision="3" scale="0" />
+            </key>
+            <one-to-many class="in.abc.model.Emp" />
+        </set>
+    </class>
+</hibernate-mapping>
