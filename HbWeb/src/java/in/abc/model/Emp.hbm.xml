@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 11, 2014 7:51:58 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="in.abc.model.Emp" table="EMP" schema="RIKIN">
+        <id name="empNo" type="short">
+            <column name="EMP_NO" precision="3" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="dept" class="in.abc.model.Dept" fetch="select">
+            <column name="DEPT_NO" precision="3" scale="0" />
+        </many-to-one>
+        <property name="empName" type="string">
+            <column name="EMP_NAME" length="40" />
+        </property>
+    </class>
+</hibernate-mapping>
